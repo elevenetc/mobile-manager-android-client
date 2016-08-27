@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DeviceManagerClient</string>
+	<string name="bind">Bind</string>
+	<string name="endpoint">End-point</string>
+	<string name="binding">Binding...</string>
+	<string name="error_binding">Binding error</string>
+	<string name="unbind">Unbind</string>
 </resources>
