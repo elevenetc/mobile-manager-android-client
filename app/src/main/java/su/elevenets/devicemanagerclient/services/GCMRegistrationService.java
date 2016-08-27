@@ -8,8 +8,11 @@ import android.support.annotation.StringRes;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import su.elevenets.devicemanagerclient.di.DIHelper;
+import su.elevenets.devicemanagerclient.di.modules.GoogleCloudModule;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Created by Eugene Levenetc on 18/07/2016.
@@ -19,7 +22,7 @@ public class GCMRegistrationService extends IntentService {
 	private static final String TAG = "RegIntentService";
 
 	@Inject TokenSender tokenSender;
-	@Inject @StringRes int gcmSenderId;
+	@Inject @Named(GoogleCloudModule.SENDER) @StringRes int gcmSenderId;
 
 	public GCMRegistrationService() {
 		super(TAG);
@@ -27,6 +30,9 @@ public class GCMRegistrationService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+
+		DIHelper.getAppComponent().inject(this);
+
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		try {
