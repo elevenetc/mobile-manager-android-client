@@ -15,6 +15,40 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Google Cloud Message components -->
+
+        <receiver
+                android:name="com.google.android.gms.gcm.GcmReceiver"
+                android:exported="true"
+                android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="gcm.play.android.samples.com.gcmquickstart"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+                android:name=".services.GCMService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
+        <service
+                android:name=".services.InstanceIDService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+        <service
+                android:name=".services.GCMRegistrationService"
+                android:exported="false">
+        </service>
+
+        <!-- Google Cloud Message components -->
+
     </application>
 
 </manifest>
