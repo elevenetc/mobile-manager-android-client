@@ -43,12 +43,8 @@
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
-        <service
-                android:name=".services.GCMRegistrationService"
-                android:exported="false">
-        </service>
 
-        <!-- Google Cloud Message components -->
+	    <!-- Google Cloud Message components -->
 
     </application>
 
