@@ -70,8 +70,8 @@ public class SettingsFragment extends Fragment implements SettingsView {
 		return editEndpoint.getText().toString();
 	}
 
-	@Override public void setBindingProgress() {
-		updateUi();
+	@Override public void setProgress() {
+		disableView();
 	}
 
 	@Override public void setBindingError(Throwable throwable) {
@@ -80,13 +80,20 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	}
 
 	@Override public void setBindingSuccess() {
-		btnBind.setText(R.string.unbind);
-		btnBind.setEnabled(true);
+		updateUi();
+	}
+
+	@Override public void setUnbindingSuccess() {
+		updateUi();
 	}
 
 	@OnClick(R.id.btn_bind) public void bindDevice() {
 		keyValueManager.store(KeyValueManager.LAST_END_POINT, getEndpoint());
 		presenter.bind();
+	}
+
+	@OnClick(R.id.btn_unbind) public void unbindDevice() {
+		presenter.unbind();
 	}
 
 	private void updateUi() {
@@ -104,5 +111,11 @@ public class SettingsFragment extends Fragment implements SettingsView {
 		if (endPoint != null) {
 			editEndpoint.setText(endPoint);
 		}
+	}
+
+	private void disableView() {
+		btnBind.setEnabled(false);
+		btnUnbind.setEnabled(false);
+		editEndpoint.setEnabled(false);
 	}
 }

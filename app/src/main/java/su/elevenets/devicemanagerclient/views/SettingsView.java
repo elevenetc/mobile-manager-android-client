@@ -6,9 +6,11 @@ package su.elevenets.devicemanagerclient.views;
 public interface SettingsView {
     String getEndpoint();
 
-    void setBindingProgress();
+    void setProgress();
 
     void setBindingError(Throwable throwable);
 
     void setBindingSuccess();
+
+    void setUnbindingSuccess();
 }

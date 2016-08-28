@@ -41,7 +41,7 @@ public class SettingsPresenter {
 
 	public void bind() {
 
-		view.setBindingProgress();
+		view.setProgress();
 		String endpoint = view.getEndpoint();
 		sub = appManager.getGcmToken()
 				.flatMap(new Func1<String, Observable<Object>>() {
@@ -51,10 +51,22 @@ public class SettingsPresenter {
 				})
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
-				.doOnNext(o -> keyValueManager.store(KeyValueManager.BOUND, true))
+				.doOnNext(o -> keyValueManager.storeBoolean(KeyValueManager.BOUND, true))
 				.subscribe(o -> {
-					keyValueManager.store(KeyValueManager.BOUND, true);
+					keyValueManager.storeBoolean(KeyValueManager.BOUND, true);
 					view.setBindingSuccess();
+				}, throwable -> view.setBindingError(throwable));
+	}
+
+	public void unbind() {
+		view.setProgress();
+		restManager.getApi(view.getEndpoint())
+				.deleteDevice(appManager.getDeviceId())
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(o -> {
+					keyValueManager.storeBoolean(KeyValueManager.BOUND, false);
+					view.setUnbindingSuccess();
 				}, throwable -> view.setBindingError(throwable));
 	}
 
