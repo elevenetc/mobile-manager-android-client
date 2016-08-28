@@ -1,13 +1,13 @@
 package su.elevenets.devicemanagerclient.di.components;
 
 import dagger.Component;
+import su.elevenets.devicemanagerclient.di.modules.AppModule;
 import su.elevenets.devicemanagerclient.di.modules.GoogleCloudModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
-import su.elevenets.devicemanagerclient.di.modules.ServicesModule;
-import su.elevenets.devicemanagerclient.di.modules.SettingsModule;
+import su.elevenets.devicemanagerclient.fragments.SettingsFragment;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
-import su.elevenets.devicemanagerclient.services.GCMRegistrationService;
 import su.elevenets.devicemanagerclient.services.GCMService;
+import su.elevenets.devicemanagerclient.services.InstanceIDService;
 
 import javax.inject.Singleton;
 
@@ -16,8 +16,7 @@ import javax.inject.Singleton;
  */
 @Singleton
 @Component(modules = {
-		SettingsModule.class,
-		ServicesModule.class,
+		AppModule.class,
 		RestModule.class,
 		GoogleCloudModule.class
 })
@@ -26,5 +25,7 @@ public interface AppComponent {
 
 	void inject(GCMService service);
 
-	void inject(GCMRegistrationService registrationService);
+	void inject(InstanceIDService instanceIDService);
+
+	void inject(SettingsFragment settingsFragment);
 }
