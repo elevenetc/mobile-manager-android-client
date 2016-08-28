@@ -14,8 +14,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import su.elevenets.devicemanagerclient.R;
+import su.elevenets.devicemanagerclient.di.DIHelper;
+import su.elevenets.devicemanagerclient.managers.KeyValueManager;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
 import su.elevenets.devicemanagerclient.views.SettingsView;
+
+import javax.inject.Inject;
 
 /**
  * Created by eleven on 21/08/2016.
@@ -26,8 +30,11 @@ public class SettingsFragment extends Fragment implements SettingsView {
 		return new SettingsFragment();
 	}
 
+	@Inject KeyValueManager keyValueManager;
+
 	@BindView(R.id.edit_endpoint) TextView editEndpoint;
 	@BindView(R.id.btn_bind) Button btnBind;
+	@BindView(R.id.btn_unbind) Button btnUnbind;
 	private Unbinder binder;
 	private SettingsPresenter presenter;
 
@@ -38,11 +45,14 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	@Override public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		presenter = new SettingsPresenter();
+		DIHelper.getAppComponent().inject(this);
+		DIHelper.getAppComponent().inject(presenter);
 	}
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View result = inflater.inflate(R.layout.fragment_settings, container, false);
 		binder = ButterKnife.bind(this, result);
+		updateUi();
 		return result;
 	}
 
@@ -61,16 +71,12 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	}
 
 	@Override public void setBindingProgress() {
-		editEndpoint.setEnabled(false);
-		btnBind.setEnabled(false);
-		btnBind.setText(R.string.binding);
+		updateUi();
 	}
 
 	@Override public void setBindingError(Throwable throwable) {
 		Toast.makeText(getContext(), R.string.error_binding, Toast.LENGTH_SHORT).show();
-		editEndpoint.setEnabled(true);
-		btnBind.setEnabled(true);
-		btnBind.setText(R.string.bind);
+		updateUi();
 	}
 
 	@Override public void setBindingSuccess() {
@@ -79,6 +85,24 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	}
 
 	@OnClick(R.id.btn_bind) public void bindDevice() {
+		keyValueManager.store(KeyValueManager.LAST_END_POINT, getEndpoint());
 		presenter.bind();
+	}
+
+	private void updateUi() {
+		final String endPoint = keyValueManager.get(KeyValueManager.LAST_END_POINT);
+		final boolean isBound = keyValueManager.getBoolean(KeyValueManager.BOUND);
+		if (isBound) {
+			editEndpoint.setEnabled(false);
+			btnBind.setEnabled(false);
+			btnUnbind.setEnabled(true);
+		} else {
+			editEndpoint.setEnabled(true);
+			btnBind.setEnabled(true);
+			btnUnbind.setEnabled(false);
+		}
+		if (endPoint != null) {
+			editEndpoint.setText(endPoint);
+		}
 	}
 }
