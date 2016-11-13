@@ -3,6 +3,7 @@ package su.elevenets.devicemanagerclient.presenters;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import su.elevenets.devicemanagerclient.managers.AppManager;
@@ -19,63 +20,73 @@ import javax.inject.Inject;
  */
 public class SettingsPresenter {
 
-	public @Inject AppManager appManager;
-	public @Inject RestManager restManager;
-	public @Inject KeyValueManager keyValueManager;
+    public
+    @Inject
+    AppManager appManager;
+    public
+    @Inject
+    RestManager restManager;
+    public
+    @Inject
+    KeyValueManager keyValueManager;
 
-	private SettingsView view;
-	private Subscription sub;
+    private SettingsView view;
+    private Subscription sub;
 
-	public void onCreate() {
+    public void onCreate() {
 
-	}
+    }
 
-	public void onViewCreated(SettingsView view) {
-		this.view = view;
-	}
+    public void onViewCreated(SettingsView view) {
+        this.view = view;
+    }
 
-	public void onViewDestroyed() {
-		RxUtils.unsub(sub);
-		this.view = null;
-	}
+    public void onViewDestroyed() {
+        RxUtils.unsub(sub);
+        this.view = null;
+    }
 
-	public void bind() {
+    public void bind() {
 
-		view.setProgress();
-		String endpoint = view.getEndpoint();
-		sub = appManager.getGcmToken()
-				.flatMap(new Func1<String, Observable<Object>>() {
-					@Override public Observable<Object> call(String token) {
-						return restManager.getApi(endpoint).postDevice(createDevice(token));
-					}
-				})
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.doOnNext(o -> keyValueManager.storeBoolean(KeyValueManager.BOUND, true))
-				.subscribe(o -> {
-					keyValueManager.storeBoolean(KeyValueManager.BOUND, true);
-					view.setBindingSuccess();
-				}, throwable -> view.setBindingError(throwable));
-	}
+        view.setProgress();
+        String endpoint = view.getEndpoint();
+        sub = appManager.getGcmToken()
+                .flatMap(new Func1<String, Observable<Object>>() {
+                    @Override
+                    public Observable<Object> call(String token) {
+                        return restManager.getApi(endpoint).postDevice(createDevice(token));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(o -> keyValueManager.storeBoolean(KeyValueManager.BOUND, true))
+                .subscribe(o -> {
+                    keyValueManager.storeBoolean(KeyValueManager.BOUND, true);
+                    view.setBindingSuccess();
+                }, throwable -> view.setBindingError(throwable));
+    }
 
-	public void unbind() {
-		view.setProgress();
-		restManager.getApi(view.getEndpoint())
-				.deleteDevice(appManager.getDeviceId())
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(o -> {
-					keyValueManager.storeBoolean(KeyValueManager.BOUND, false);
-					view.setUnbindingSuccess();
-				}, throwable -> view.setBindingError(throwable));
-	}
+    public void unbind() {
+        view.setProgress();
+        restManager.getApi(view.getEndpoint())
+                .deleteDevice(appManager.getDeviceId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    keyValueManager.storeBoolean(KeyValueManager.BOUND, false);
+                    view.setUnbindingSuccess();
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    view.setBindingError(throwable);
+                });
+    }
 
-	private Device createDevice(String token) {
-		Device device = new Device();
-		device.gcmToken = token;
-		device.deviceId = appManager.getDeviceId();
-		device.manufacturer = appManager.getManufacturer();
-		device.model = appManager.getModel();
-		return device;
-	}
+    private Device createDevice(String token) {
+        Device device = new Device();
+        device.gcmToken = token;
+        device.deviceId = appManager.getDeviceId();
+        device.manufacturer = appManager.getManufacturer();
+        device.model = appManager.getModel();
+        return device;
+    }
 }

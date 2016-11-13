@@ -12,9 +12,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        if(savedInstanceState == null){
-	        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-	        ft.add(R.id.root_container, SettingsFragment.create()).commit();
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.root_container, SettingsFragment.create()).commit();
         }
     }
 }
