@@ -33,32 +33,37 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/LICENSE-FIREBASE_jvm.txt'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     //Testing
     testCompile 'junit:junit:4.12'
-
     //Google
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.google.android.gms:play-services-gcm:9.2.0'
-
+    compile 'com.google.firebase:firebase-core:9.8.0'
+    compile 'com.google.firebase:firebase-messaging:9.8.0'
+    compile 'com.firebase:firebase-client-android:2.5.2'
     //Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-
     //Rx
     compile 'io.reactivex:rxjava:1.1.7'
     compile 'io.reactivex:rxandroid:1.2.1'
-
     //Dagger
     compile 'com.google.dagger:dagger:2.0.1'
     apt "com.google.dagger:dagger-compiler:2.0.1"
-
     //ButteKnife
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }
+
+apply plugin: 'com.google.gms.google-services'
