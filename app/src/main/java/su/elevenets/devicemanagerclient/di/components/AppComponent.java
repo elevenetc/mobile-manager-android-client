@@ -6,8 +6,7 @@ import su.elevenets.devicemanagerclient.di.modules.GoogleCloudModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
 import su.elevenets.devicemanagerclient.fragments.SettingsFragment;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
-import su.elevenets.devicemanagerclient.services.GCMService;
-import su.elevenets.devicemanagerclient.services.InstanceIDService;
+import su.elevenets.devicemanagerclient.services.fcm.MyFirebaseInstanceIDService;
 
 import javax.inject.Singleton;
 
@@ -16,16 +15,14 @@ import javax.inject.Singleton;
  */
 @Singleton
 @Component(modules = {
-		AppModule.class,
-		RestModule.class,
-		GoogleCloudModule.class
+        AppModule.class,
+        RestModule.class,
+        GoogleCloudModule.class
 })
 public interface AppComponent {
-	void inject(SettingsPresenter presenter);
+    void inject(SettingsPresenter presenter);
 
-	void inject(GCMService service);
+    void inject(SettingsFragment settingsFragment);
 
-	void inject(InstanceIDService instanceIDService);
-
-	void inject(SettingsFragment settingsFragment);
+    //void inject(MyFirebaseInstanceIDService myFirebaseInstanceIDService);
 }

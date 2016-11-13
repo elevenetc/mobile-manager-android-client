@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "574682410664",
+    "firebase_url": "https://device-manager-149419.firebaseio.com",
+    "project_id": "device-manager-149419",
+    "storage_bucket": "device-manager-149419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574682410664:android:f1955695fa6d9714",
+        "android_client_info": {
+          "package_name": "su.elevenets.devicemanagerclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574682410664-jvdgkdhvrsji0mk741k84jshau4emlgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNzO6fFEm9fqTyzvcMTjwzaLNFp83On6Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

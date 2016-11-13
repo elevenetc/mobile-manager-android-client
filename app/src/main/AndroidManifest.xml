@@ -3,7 +3,7 @@
           package="su.elevenets.devicemanagerclient">
 
     <application
-		    android:name=".App"
+            android:name=".App"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -19,32 +19,22 @@
 
         <!-- Google Cloud Message components -->
 
-        <receiver
-                android:name="com.google.android.gms.gcm.GcmReceiver"
-                android:exported="true"
-                android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="gcm.play.android.samples.com.gcmquickstart"/>
-            </intent-filter>
-        </receiver>
 
         <service
-                android:name=".services.GCMService"
-                android:exported="false">
+                android:name=".services.fcm.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-            </intent-filter>
-        </service>
-        <service
-                android:name=".services.InstanceIDService"
-                android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-	    <!-- Google Cloud Message components -->
+        <service
+                android:name=".services.fcm.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <!-- Google Cloud Message components -->
 
     </application>
 
