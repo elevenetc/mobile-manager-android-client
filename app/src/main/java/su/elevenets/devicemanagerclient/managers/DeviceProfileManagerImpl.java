@@ -25,7 +25,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
         return getDeviceProfile().flatMap(new Func1<DeviceProfile, Observable<Object>>() {
             @Override
             public Observable<Object> call(DeviceProfile deviceProfile) {
-                final String endPoint = keyValueManager.get(KeyValueManager.LAST_END_POINT);
+                final String endPoint = keyValueManager.get(KeyValueManager.END_POINT);
                 return restManager.getApi(endPoint).postDevice(deviceProfile);
             }
         });

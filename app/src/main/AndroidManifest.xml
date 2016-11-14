@@ -21,14 +21,14 @@
 
 
         <service
-                android:name=".services.fcm.MyFirebaseMessagingService">
+                android:name=".services.fcm.MessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-                android:name=".services.fcm.MyFirebaseInstanceIDService">
+                android:name=".services.fcm.InstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>

@@ -6,7 +6,8 @@ import su.elevenets.devicemanagerclient.di.modules.GoogleCloudModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
 import su.elevenets.devicemanagerclient.fragments.SettingsFragment;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
-import su.elevenets.devicemanagerclient.services.fcm.MyFirebaseInstanceIDService;
+import su.elevenets.devicemanagerclient.services.fcm.InstanceIDService;
+import su.elevenets.devicemanagerclient.services.fcm.MessagingService;
 
 import javax.inject.Singleton;
 
@@ -24,5 +25,7 @@ public interface AppComponent {
 
     void inject(SettingsFragment settingsFragment);
 
-    void inject(MyFirebaseInstanceIDService myFirebaseInstanceIDService);
+    void inject(InstanceIDService instanceIDService);
+
+    void inject(MessagingService messagingService);
 }

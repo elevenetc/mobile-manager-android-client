@@ -48,10 +48,12 @@ public class SettingsPresenter {
 
     public void bind() {
 
+        //TODO: add end point validation
+
         view.setProgress();
         String endpoint = view.getEndpoint();
 
-        keyValueManager.store(KeyValueManager.LAST_END_POINT, endpoint);
+        keyValueManager.store(KeyValueManager.END_POINT, endpoint);
 
         sub = deviceProfileManager.uploadDeviceProfile()
                 .subscribeOn(Schedulers.io())
@@ -79,7 +81,7 @@ public class SettingsPresenter {
     }
 
     public String getEndpoint() {
-        return keyValueManager.get(KeyValueManager.LAST_END_POINT);
+        return keyValueManager.get(KeyValueManager.END_POINT);
     }
 
     public boolean isBound() {

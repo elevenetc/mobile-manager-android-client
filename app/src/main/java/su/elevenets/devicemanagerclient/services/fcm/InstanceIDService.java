@@ -11,7 +11,7 @@ import javax.inject.Inject;
 /**
  * Created by eugene.levenetc on 13/11/2016.
  */
-public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
+public class InstanceIDService extends FirebaseInstanceIdService {
 
     @Inject
     DeviceProfileManager deviceProfileManager;

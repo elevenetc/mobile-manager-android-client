@@ -9,7 +9,7 @@ public interface KeyValueManager {
 
 	String GCM_TOKEN = "gcmToken";
 	String BOUND = "bound";
-	String LAST_END_POINT = "lastEndPoint";
+	String END_POINT = "lastEndPoint";
 
 	void store(String key, String value);
 

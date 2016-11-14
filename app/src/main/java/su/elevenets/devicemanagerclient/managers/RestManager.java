@@ -18,6 +18,9 @@ public interface RestManager {
         @POST("devices")
         Observable<Object> postDevice(@Body DeviceProfile deviceProfile);
 
+        @POST("pong/{deviceId}")
+        Observable<Object> pong(@Path("deviceId") String deviceId);
+
         @DELETE("devices/{deviceId}")
         Observable<Object> deleteDevice(@Path("deviceId") String deviceId);
     }
