@@ -24,5 +24,5 @@ public interface AppComponent {
 
     void inject(SettingsFragment settingsFragment);
 
-    //void inject(MyFirebaseInstanceIDService myFirebaseInstanceIDService);
+    void inject(MyFirebaseInstanceIDService myFirebaseInstanceIDService);
 }

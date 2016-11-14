@@ -30,7 +30,7 @@ public class SettingsFragment extends Fragment implements SettingsView {
 		return new SettingsFragment();
 	}
 
-	@Inject KeyValueManager keyValueManager;
+
 
 	@BindView(R.id.edit_endpoint) TextView editEndpoint;
 	@BindView(R.id.btn_bind) Button btnBind;
@@ -88,7 +88,6 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	}
 
 	@OnClick(R.id.btn_bind) public void bindDevice() {
-		keyValueManager.store(KeyValueManager.LAST_END_POINT, getEndpoint());
 		presenter.bind();
 	}
 
@@ -97,8 +96,11 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	}
 
 	private void updateUi() {
-		final String endPoint = keyValueManager.get(KeyValueManager.LAST_END_POINT);
-		final boolean isBound = keyValueManager.getBoolean(KeyValueManager.BOUND);
+
+
+
+		final String endPoint = presenter.getEndpoint();
+		final boolean isBound = presenter.isBound();
 		if (isBound) {
 			editEndpoint.setEnabled(false);
 			btnBind.setEnabled(false);

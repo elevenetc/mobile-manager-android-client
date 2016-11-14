@@ -6,7 +6,7 @@ import rx.Completable;
 import su.elevenets.devicemanagerclient.R;
 import su.elevenets.devicemanagerclient.di.DIHelper;
 import su.elevenets.devicemanagerclient.managers.RestManager;
-import su.elevenets.devicemanagerclient.models.Device;
+import su.elevenets.devicemanagerclient.models.DeviceProfile;
 import su.elevenets.devicemanagerclient.services.TokenSender;
 
 import javax.inject.Named;
@@ -21,7 +21,7 @@ public class GoogleCloudModule {
 	@Provides @Singleton public TokenSender provideTokenSender(RestManager restManager) {
 		return new TokenSender() {
 			@Override public Completable send(String token) {
-				Device device = new Device();
+				DeviceProfile deviceProfile = new DeviceProfile();
 //				device.
 //				restManager.postDevice(device)
 				return null;

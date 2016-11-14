@@ -1,15 +1,12 @@
 package su.elevenets.devicemanagerclient.presenters;
 
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import su.elevenets.devicemanagerclient.managers.AppManager;
+import su.elevenets.devicemanagerclient.managers.DeviceProfileManager;
 import su.elevenets.devicemanagerclient.managers.KeyValueManager;
 import su.elevenets.devicemanagerclient.managers.RestManager;
-import su.elevenets.devicemanagerclient.models.Device;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 import su.elevenets.devicemanagerclient.views.SettingsView;
 
@@ -29,6 +26,9 @@ public class SettingsPresenter {
     public
     @Inject
     KeyValueManager keyValueManager;
+
+    @Inject
+    DeviceProfileManager deviceProfileManager;
 
     private SettingsView view;
     private Subscription sub;
@@ -50,13 +50,10 @@ public class SettingsPresenter {
 
         view.setProgress();
         String endpoint = view.getEndpoint();
-        sub = appManager.getGcmToken()
-                .flatMap(new Func1<String, Observable<Object>>() {
-                    @Override
-                    public Observable<Object> call(String token) {
-                        return restManager.getApi(endpoint).postDevice(createDevice(token));
-                    }
-                })
+
+        keyValueManager.store(KeyValueManager.LAST_END_POINT, endpoint);
+
+        sub = deviceProfileManager.uploadDeviceProfile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(o -> keyValueManager.storeBoolean(KeyValueManager.BOUND, true))
@@ -81,12 +78,11 @@ public class SettingsPresenter {
                 });
     }
 
-    private Device createDevice(String token) {
-        Device device = new Device();
-        device.gcmToken = token;
-        device.deviceId = appManager.getDeviceId();
-        device.manufacturer = appManager.getManufacturer();
-        device.model = appManager.getModel();
-        return device;
+    public String getEndpoint() {
+        return keyValueManager.get(KeyValueManager.LAST_END_POINT);
+    }
+
+    public boolean isBound() {
+        return keyValueManager.getBoolean(KeyValueManager.BOUND);
     }
 }

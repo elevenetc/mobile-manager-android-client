@@ -5,7 +5,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
-import su.elevenets.devicemanagerclient.models.Device;
+import su.elevenets.devicemanagerclient.models.DeviceProfile;
 
 /**
  * Created by eleven on 27/08/2016.
@@ -16,7 +16,7 @@ public interface RestManager {
 
     interface Api {
         @POST("devices")
-        Observable<Object> postDevice(@Body Device device);
+        Observable<Object> postDevice(@Body DeviceProfile deviceProfile);
 
         @DELETE("devices/{deviceId}")
         Observable<Object> deleteDevice(@Path("deviceId") String deviceId);

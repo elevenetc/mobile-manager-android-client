@@ -2,14 +2,10 @@ package su.elevenets.devicemanagerclient.managers;
 
 import android.content.Context;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 import rx.Observable;
 import su.elevenets.devicemanagerclient.R;
+import su.elevenets.devicemanagerclient.models.DeviceProfile;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 
 import static android.os.Build.MANUFACTURER;
@@ -27,6 +23,8 @@ public class AppManagerImpl implements AppManager {
         this.app = app;
         this.keyValueManager = keyValueManager;
     }
+
+
 
     @Override
     public int getSenderId() {
