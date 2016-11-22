@@ -1,11 +1,19 @@
 package su.elevenets.devicemanagerclient.managers;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import rx.Observable;
 import su.elevenets.devicemanagerclient.R;
-import su.elevenets.devicemanagerclient.models.DeviceProfile;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 
 import static android.os.Build.MANUFACTURER;
@@ -24,7 +32,72 @@ public class AppManagerImpl implements AppManager {
         this.keyValueManager = keyValueManager;
     }
 
+    @Override
+    public void initValues(Activity activity) {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        keyValueManager.store(KeyValueManager.SCREEN_WIDTH, displaymetrics.widthPixels);
+        keyValueManager.store(KeyValueManager.SCREEN_HEIGHT, displaymetrics.heightPixels);
+    }
 
+    @Override
+    public float batteryLevel() {
+        final Intent batteryIntent = app.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        final int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        final int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        if (level == -1 || scale == -1) return 50.0f;
+
+        return ((float) level / (float) scale) * 100.0f;
+    }
+
+    @Override
+    public int getScreenWidth() {
+        return keyValueManager.getInt(KeyValueManager.SCREEN_WIDTH);
+    }
+
+    @Override
+    public int getScreenHeight() {
+        return keyValueManager.getInt(KeyValueManager.SCREEN_WIDTH);
+    }
+
+    @Override
+    public String osVersion() {
+        return Build.VERSION.RELEASE;
+    }
+
+    @Override
+    public String getWiFiSSID() {
+        WifiManager wifiManager = (WifiManager) app.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifiManager.getConnectionInfo();
+        return info.getSSID();
+    }
+
+    @Override
+    public boolean hasNfc() {
+        return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
+    }
+
+    @Override
+    public boolean hasFingerprint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT);
+        else
+            return false;
+    }
+
+    @Override
+    public boolean hasBluetooth() {
+        return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
+    }
+
+    @Override
+    public boolean hasBluetoothLowEnergy() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+        else
+            return false;
+    }
 
     @Override
     public int getSenderId() {

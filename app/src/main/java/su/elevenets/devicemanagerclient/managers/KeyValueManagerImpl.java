@@ -20,7 +20,7 @@ public class KeyValueManagerImpl implements KeyValueManager {
 		sharedPreferences.edit().putString(key, String.valueOf(value)).apply();
 	}
 
-	@Override public void storeBoolean(String key, boolean value) {
+	@Override public void store(String key, boolean value) {
 		sharedPreferences.edit().putBoolean(key, value).apply();
 	}
 

@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 @Module
 public class AppModule {
 
-    public static final String GCM_TOKEN = "gcmToken";
+    public static final String GCM_TOKEN = "pushToken";
 
     private Context app;
 

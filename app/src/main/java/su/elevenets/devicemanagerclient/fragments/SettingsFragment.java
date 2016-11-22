@@ -30,8 +30,6 @@ public class SettingsFragment extends Fragment implements SettingsView {
 		return new SettingsFragment();
 	}
 
-
-
 	@BindView(R.id.edit_endpoint) TextView editEndpoint;
 	@BindView(R.id.btn_bind) Button btnBind;
 	@BindView(R.id.btn_unbind) Button btnUnbind;

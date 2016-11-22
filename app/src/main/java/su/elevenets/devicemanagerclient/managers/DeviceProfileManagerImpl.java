@@ -1,5 +1,7 @@
 package su.elevenets.devicemanagerclient.managers;
 
+import android.bluetooth.BluetoothManager;
+import android.nfc.NfcManager;
 import rx.Observable;
 import rx.functions.Func1;
 import su.elevenets.devicemanagerclient.models.DeviceProfile;
@@ -35,7 +37,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
     public Observable<DeviceProfile> getDeviceProfile() {
         return appManager.getGcmToken().map(token -> {
             DeviceProfile deviceProfile = new DeviceProfile();
-            deviceProfile.gcmToken = token;
+            deviceProfile.pushToken = token;
             deviceProfile.deviceId = appManager.getDeviceId();
             deviceProfile.manufacturer = appManager.getManufacturer();
             deviceProfile.model = appManager.getModel();

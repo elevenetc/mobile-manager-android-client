@@ -58,9 +58,9 @@ public class SettingsPresenter {
         sub = deviceProfileManager.uploadDeviceProfile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(o -> keyValueManager.storeBoolean(KeyValueManager.BOUND, true))
+                .doOnNext(o -> keyValueManager.store(KeyValueManager.BOUND, true))
                 .subscribe(o -> {
-                    keyValueManager.storeBoolean(KeyValueManager.BOUND, true);
+                    keyValueManager.store(KeyValueManager.BOUND, true);
                     view.setBindingSuccess();
                 }, throwable -> view.setBindingError(throwable));
     }
@@ -72,7 +72,7 @@ public class SettingsPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    keyValueManager.storeBoolean(KeyValueManager.BOUND, false);
+                    keyValueManager.store(KeyValueManager.BOUND, false);
                     view.setUnbindingSuccess();
                 }, throwable -> {
                     throwable.printStackTrace();
