@@ -15,35 +15,41 @@ import javax.inject.Singleton;
 @Module
 public class AppModule {
 
-    public static final String GCM_TOKEN = "pushToken";
+	public static final String GCM_TOKEN = "pushToken";
 
-    private Context app;
+	private Context app;
 
-    public AppModule(Context app) {
-        this.app = app;
-    }
+	public AppModule(Context app) {
+		this.app = app;
+	}
 
-    @Provides
-    @Singleton
-    public AppManager provideAppManager(KeyValueManager keyValueManager) {
-        return new AppManagerImpl(app, keyValueManager);
-    }
+	@Provides
+	@Singleton
+	public AppManager provideAppManager(KeyValueManager keyValueManager) {
+		return new AppManagerImpl(app, keyValueManager);
+	}
 
-    @Provides
-    @Singleton
-    public KeyValueManager provideKeyValueManager() {
-        return new KeyValueManagerImpl(app);
-    }
+	@Provides
+	@Singleton
+	public KeyValueManager provideKeyValueManager() {
+		return new KeyValueManagerImpl(app);
+	}
 
-    @Provides
-    @Singleton
-    public BroadcastBus provideProadcastBus() {
-        return new BroadcastBusImpl();
-    }
+	@Provides
+	@Singleton
+	public LocManager provideLocManager() {
+		return new LocManagerImpl(app);
+	}
 
-    @Provides
-    @Singleton
-    public DeviceProfileManager provideDeviceProfileManager(RestManager restManager, KeyValueManager keyValueManager, AppManager appManager) {
-        return new DeviceProfileManagerImpl(restManager, keyValueManager, appManager);
-    }
+	@Provides
+	@Singleton
+	public BroadcastBus provideProadcastBus() {
+		return new BroadcastBusImpl();
+	}
+
+	@Provides
+	@Singleton
+	public DeviceProfileManager provideDeviceProfileManager(RestManager restManager, LocManager locManager, AppManager appManager) {
+		return new DeviceProfileManagerImpl(restManager, appManager, locManager);
+	}
 }

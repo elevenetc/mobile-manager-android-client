@@ -17,7 +17,8 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = {
 		AppModule.class,
-		RestModule.class
+		RestModule.class,
+
 })
 public interface AppComponent {
 	void inject(SettingsPresenter presenter);

@@ -20,8 +20,7 @@ public class DeviceProfile {
 	public boolean hasBluetooth;
 	public boolean hasBluetoothLowEnergy;
 	public boolean hasFingerprintScanner;
-	public long lat;
-	public long lon;
 	public float batteryLevel;
-
+	//TODO: add screen size
+	//TODO: add switchedOn
 }

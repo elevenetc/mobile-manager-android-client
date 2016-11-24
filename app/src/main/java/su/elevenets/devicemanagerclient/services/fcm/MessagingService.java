@@ -5,6 +5,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.di.DIHelper;
 import su.elevenets.devicemanagerclient.managers.AppManager;
 import su.elevenets.devicemanagerclient.managers.KeyValueManager;
@@ -36,7 +37,7 @@ public class MessagingService extends FirebaseMessagingService {
 		if (data.containsKey("command")) {
 			if (data.containsValue("ping")) {
 				restManager
-						.getApi(keyValueManager.get(KeyValueManager.END_POINT))
+						.getApi()
 						.pong(appManager.getDeviceId())
 						.subscribeOn(Schedulers.io())
 						.observeOn(AndroidSchedulers.mainThread())

@@ -54,26 +54,26 @@ public class SettingsPresenter {
 		view.setProgress();
 		String endpoint = view.getEndpoint();
 
-		keyValueManager.store(KeyValueManager.END_POINT, endpoint);
+		keyValueManager.store(Key.END_POINT, endpoint);
 
 		sub = deviceProfileManager.uploadDeviceProfile()
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
-				.doOnNext(o -> keyValueManager.store(KeyValueManager.BOUND, true))
+				.doOnNext(o -> keyValueManager.store(Key.BOUND, true))
 				.subscribe(o -> {
-					keyValueManager.store(KeyValueManager.BOUND, true);
+					keyValueManager.store(Key.BOUND, true);
 					view.setBindingSuccess();
 				}, throwable -> view.setBindingError(throwable));
 	}
 
 	public void unbind() {
 		view.setProgress();
-		restManager.getApi(view.getEndpoint())
+		restManager.getApi()
 				.deleteDevice(appManager.getDeviceId())
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(o -> {
-					keyValueManager.store(KeyValueManager.BOUND, false);
+					keyValueManager.store(Key.BOUND, false);
 					view.setUnbindingSuccess();
 				}, throwable -> {
 					throwable.printStackTrace();
@@ -82,11 +82,11 @@ public class SettingsPresenter {
 	}
 
 	public String getEndpoint() {
-		return keyValueManager.get(KeyValueManager.END_POINT);
+		return keyValueManager.get(Key.END_POINT);
 	}
 
 	public boolean isBound() {
-		return keyValueManager.getBoolean(KeyValueManager.BOUND);
+		return keyValueManager.getBoolean(Key.BOUND);
 	}
 
 	public void enableLocation() {

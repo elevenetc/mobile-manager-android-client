@@ -17,59 +17,55 @@ import su.elevenets.devicemanagerclient.utils.Utils;
  */
 public class LocManagerImpl implements LocManager, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private GoogleApiClient apiClient;
-    private Context appContext;
+	private GoogleApiClient apiClient;
+	private Context appContext;
 
-    public LocManagerImpl(Context appContext) {
-        this.appContext = appContext;
-        init(appContext);
-    }
+	public LocManagerImpl(Context appContext) {
+		this.appContext = appContext;
+		init(appContext);
+	}
 
-    public Single<Location> requestLocation() {
-        if (Utils.isLocationAllowed(appContext)) {
-            return Single.create(singleSubscriber -> LocationServices.FusedLocationApi.requestLocationUpdates(
-                    apiClient,
-                    new LocationRequest(), location -> {
-                        if (!singleSubscriber.isUnsubscribed()) singleSubscriber.onSuccess(location);
-                    })
-            );
-        } else {
-            return Single.error(new IllegalStateException("Location is not allowed"));
-        }
-    }
+	@Override public Single<Location> getLocation() {
+		if (Utils.isLocationAllowed(appContext)) {
+			return Single.create(singleSubscriber -> {
+						final LocationRequest locationRequest = new LocationRequest();
 
-    private void init(Context context) {
+				final Thread thread = Thread.currentThread();
+				if(thread == null){
 
-        apiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+				}
 
-        if (!Utils.isLocationAllowed(context)) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-    }
+				LocationServices.FusedLocationApi.requestLocationUpdates(
+								apiClient,
+								locationRequest, location -> {
+									if (!singleSubscriber.isUnsubscribed()) singleSubscriber.onSuccess(location);
+								}
+						);
+					}
+			);
+		} else {
+			return Single.error(new IllegalStateException("Location is not allowed"));
+		}
+	}
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
+	private void init(Context context) {
+		apiClient = new GoogleApiClient.Builder(context)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(LocationServices.API)
+				.build();
+		apiClient.connect();
+	}
 
-    }
+	@Override public void onConnected(@Nullable Bundle bundle) {
 
-    @Override
-    public void onConnectionSuspended(int i) {
+	}
 
-    }
+	@Override public void onConnectionSuspended(int i) {
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+	}
 
-    }
+	@Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+	}
 }

@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import rx.Observable;
 import su.elevenets.devicemanagerclient.R;
+import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 import su.elevenets.devicemanagerclient.utils.Utils;
 
@@ -39,8 +40,8 @@ public class AppManagerImpl implements AppManager {
 	public void initValues(Activity activity) {
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-		keyValueManager.store(KeyValueManager.SCREEN_WIDTH, displaymetrics.widthPixels);
-		keyValueManager.store(KeyValueManager.SCREEN_HEIGHT, displaymetrics.heightPixels);
+		keyValueManager.store(Key.SCREEN_WIDTH, displaymetrics.widthPixels);
+		keyValueManager.store(Key.SCREEN_HEIGHT, displaymetrics.heightPixels);
 	}
 
 	@Override
@@ -56,12 +57,12 @@ public class AppManagerImpl implements AppManager {
 
 	@Override
 	public int getScreenWidth() {
-		return keyValueManager.getInt(KeyValueManager.SCREEN_WIDTH);
+		return keyValueManager.getInt(Key.SCREEN_WIDTH);
 	}
 
 	@Override
 	public int getScreenHeight() {
-		return keyValueManager.getInt(KeyValueManager.SCREEN_HEIGHT);
+		return keyValueManager.getInt(Key.SCREEN_HEIGHT);
 	}
 
 	@Override
