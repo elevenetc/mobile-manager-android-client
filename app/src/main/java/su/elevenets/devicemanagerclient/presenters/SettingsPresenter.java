@@ -4,6 +4,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import su.elevenets.devicemanagerclient.consts.Key;
+import su.elevenets.devicemanagerclient.consts.RequestCodes;
 import su.elevenets.devicemanagerclient.managers.AppManager;
 import su.elevenets.devicemanagerclient.managers.DeviceProfileManager;
 import su.elevenets.devicemanagerclient.managers.KeyValueManager;
@@ -27,12 +28,18 @@ public class SettingsPresenter {
 	private SettingsView view;
 	private Subscription sub;
 
-	public void onCreate() {
-
+	public void resetSettings() {
+		keyValueManager.clear();
 	}
 
 	public void onViewCreated(SettingsView view) {
 		this.view = view;
+
+		if (appManager.isM()) {
+			if (!appManager.isFingerPrintAccessAllowed()) {
+				view.requestFingerPrintPermission();
+			}
+		}
 	}
 
 	public void onViewDestroyed() {
@@ -82,10 +89,6 @@ public class SettingsPresenter {
 		return keyValueManager.getBoolean(KeyValueManager.BOUND);
 	}
 
-	public boolean isLocationAllowed() {
-		return appManager.isLocationAllowed();
-	}
-
 	public void enableLocation() {
 		if (!appManager.isLocationAllowed()) {
 			view.requestLocationPermission();
@@ -113,7 +116,12 @@ public class SettingsPresenter {
 	}
 
 	public void handlePermissionResult(int requestCode, int[] grantResults) {
-		if (Utils.locationGranted(requestCode, grantResults)) handleEnabledLocation();
-		else handleDisabledLocation();
+		if (requestCode == RequestCodes.PERMISSION_LOCATION) {
+			if (Utils.locationGranted(requestCode, grantResults)) handleEnabledLocation();
+			else handleDisabledLocation();
+		} else if (requestCode == RequestCodes.PERMISSION_FINGER_PRINT) {
+
+		}
+
 	}
 }

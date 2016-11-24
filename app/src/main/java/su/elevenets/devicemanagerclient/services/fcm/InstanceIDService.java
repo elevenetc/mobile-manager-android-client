@@ -13,17 +13,15 @@ import javax.inject.Inject;
  */
 public class InstanceIDService extends FirebaseInstanceIdService {
 
-    @Inject
-    DeviceProfileManager deviceProfileManager;
+	@Inject DeviceProfileManager deviceProfileManager;
 
-    @Override
-    public void onTokenRefresh() {
-        super.onTokenRefresh();
-        DIHelper.getAppComponent().inject(this);
+	@Override public void onTokenRefresh() {
+		super.onTokenRefresh();
+		DIHelper.getAppComponent().inject(this);
 
-        deviceProfileManager.uploadDeviceProfile()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
+		deviceProfileManager.uploadDeviceProfile()
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe();
+	}
 }

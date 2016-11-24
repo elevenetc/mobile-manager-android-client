@@ -19,4 +19,6 @@ public interface SettingsView {
 	void locationEnabled();
 
 	void locationDisabled();
+
+	void requestFingerPrintPermission();
 }

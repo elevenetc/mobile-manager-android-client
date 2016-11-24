@@ -3,7 +3,6 @@ package su.elevenets.devicemanagerclient.di.components;
 import dagger.Component;
 import su.elevenets.devicemanagerclient.MainActivity;
 import su.elevenets.devicemanagerclient.di.modules.AppModule;
-import su.elevenets.devicemanagerclient.di.modules.GoogleCloudModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
 import su.elevenets.devicemanagerclient.fragments.SettingsFragment;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
@@ -17,18 +16,17 @@ import javax.inject.Singleton;
  */
 @Singleton
 @Component(modules = {
-        AppModule.class,
-        RestModule.class,
-        GoogleCloudModule.class
+		AppModule.class,
+		RestModule.class
 })
 public interface AppComponent {
-    void inject(SettingsPresenter presenter);
+	void inject(SettingsPresenter presenter);
 
-    void inject(SettingsFragment settingsFragment);
+	void inject(SettingsFragment settingsFragment);
 
-    void inject(InstanceIDService instanceIDService);
+	void inject(InstanceIDService instanceIDService);
 
-    void inject(MessagingService messagingService);
+	void inject(MessagingService messagingService);
 
-    void inject(MainActivity mainActivity);
+	void inject(MainActivity mainActivity);
 }

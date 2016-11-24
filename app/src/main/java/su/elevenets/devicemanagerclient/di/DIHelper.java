@@ -4,7 +4,6 @@ import android.content.Context;
 import su.elevenets.devicemanagerclient.di.components.AppComponent;
 import su.elevenets.devicemanagerclient.di.components.DaggerAppComponent;
 import su.elevenets.devicemanagerclient.di.modules.AppModule;
-import su.elevenets.devicemanagerclient.di.modules.GoogleCloudModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
 
 /**
@@ -19,7 +18,6 @@ public class DIHelper {
 		appComponent = DaggerAppComponent.builder()
 				.appModule(new AppModule(appContext))
 				.restModule(new RestModule())
-				.googleCloudModule(new GoogleCloudModule())
 				.build();
 	}
 

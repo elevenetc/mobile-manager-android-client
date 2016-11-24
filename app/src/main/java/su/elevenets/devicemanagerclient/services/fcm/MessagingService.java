@@ -18,47 +18,42 @@ import java.util.Map;
  */
 public class MessagingService extends FirebaseMessagingService {
 
-    @Inject
-    public RestManager restManager;
+	@Inject RestManager restManager;
+	@Inject KeyValueManager keyValueManager;
+	@Inject AppManager appManager;
 
-    @Inject
-    public KeyValueManager keyValueManager;
+	@Override
+	public void onMessageReceived(RemoteMessage remoteMessage) {
 
-    @Inject
-    public AppManager appManager;
+		DIHelper.getAppComponent().inject(this);
 
-    @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+		super.onMessageReceived(remoteMessage);
+		final Map<String, String> data = remoteMessage.getData();
+		final String from = remoteMessage.getFrom();
+		final String messageId = remoteMessage.getMessageId();
+		final String messageType = remoteMessage.getMessageType();
 
-        DIHelper.getAppComponent().inject(this);
+		if (data.containsKey("command")) {
+			if (data.containsValue("ping")) {
+				restManager
+						.getApi(keyValueManager.get(KeyValueManager.END_POINT))
+						.pong(appManager.getDeviceId())
+						.subscribeOn(Schedulers.io())
+						.observeOn(AndroidSchedulers.mainThread())
+						.subscribe(new Action1<Object>() {
+							@Override
+							public void call(Object o) {
+								if (o == null) {
 
-        super.onMessageReceived(remoteMessage);
-        final Map<String, String> data = remoteMessage.getData();
-        final String from = remoteMessage.getFrom();
-        final String messageId = remoteMessage.getMessageId();
-        final String messageType = remoteMessage.getMessageType();
-
-        if (data.containsKey("command")) {
-            if (data.containsValue("ping")) {
-                restManager
-                        .getApi(keyValueManager.get(KeyValueManager.END_POINT))
-                        .pong(appManager.getDeviceId())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Object>() {
-                            @Override
-                            public void call(Object o) {
-                                if(o == null){
-
-                                }
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                throwable.printStackTrace();
-                            }
-                        });
-            }
-        }
-    }
+								}
+							}
+						}, new Action1<Throwable>() {
+							@Override
+							public void call(Throwable throwable) {
+								throwable.printStackTrace();
+							}
+						});
+			}
+		}
+	}
 }

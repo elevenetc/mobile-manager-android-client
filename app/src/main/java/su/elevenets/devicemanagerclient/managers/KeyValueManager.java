@@ -24,4 +24,6 @@ public interface KeyValueManager {
 	int getInt(String key);
 
 	boolean getBoolean(String key);
+
+	void clear();
 }

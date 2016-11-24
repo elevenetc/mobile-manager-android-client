@@ -19,22 +19,31 @@
 		          android:layout_width="match_parent"
 		          android:layout_height="wrap_content"/>
 
-		<Button android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:id="@+id/btn_bind"
-		        android:text="@string/bind"/>
+		<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
 
-		<Button android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:id="@+id/btn_unbind"
-		        android:text="@string/unbind"/>
+			<Button android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/btn_bind"
+			        android:text="@string/bind"/>
+
+			<Button android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/btn_unbind"
+			        android:text="@string/unbind"/>
+
+		</LinearLayout>
+
+
 	</LinearLayout>
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	              android:paddingBottom="@dimen/border"
 	              android:orientation="vertical"
 	              android:layout_width="match_parent"
-	              android:layout_height="match_parent">
+	              android:layout_height="wrap_content">
 		<TextView
 				android:text="@string/location_access"
 				android:layout_width="wrap_content"
@@ -44,6 +53,22 @@
 		          android:id="@+id/check_location_enabled"
 		          android:layout_width="wrap_content"
 		          android:layout_height="wrap_content"/>
+	</LinearLayout>
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	              android:paddingBottom="@dimen/border"
+	              android:orientation="vertical"
+	              android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
+		<TextView
+				android:text="@string/clear_settings"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		<Button android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:id="@+id/btn_clear"
+		        android:text="@string/clear"/>
 	</LinearLayout>
 
 </LinearLayout>

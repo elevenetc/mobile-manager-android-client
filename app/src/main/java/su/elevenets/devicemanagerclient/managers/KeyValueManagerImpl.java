@@ -39,4 +39,8 @@ public class KeyValueManagerImpl implements KeyValueManager {
 	@Override @Nullable public boolean getBoolean(String key) {
 		return sharedPreferences.getBoolean(key, false);
 	}
+
+	@Override public void clear() {
+		sharedPreferences.edit().clear().apply();
+	}
 }

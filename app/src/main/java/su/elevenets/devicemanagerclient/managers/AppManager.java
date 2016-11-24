@@ -23,7 +23,7 @@ public interface AppManager {
 
 	boolean hasNfc();
 
-	boolean hasFingerprint();
+	boolean hasFingerprintScanner();
 
 	boolean hasBluetooth();
 
@@ -40,4 +40,8 @@ public interface AppManager {
 	Observable<String> getGcmToken();
 
 	boolean isLocationAllowed();
+
+	boolean isM();
+
+	boolean isFingerPrintAccessAllowed();
 }

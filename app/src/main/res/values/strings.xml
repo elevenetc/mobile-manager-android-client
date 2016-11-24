@@ -10,4 +10,6 @@
 	<string name="remote_binding">Remote binding</string>
 	<string name="location_access">Location access</string>
 	<string name="enabled">enabled</string>
+	<string name="clear">Clear</string>
+	<string name="clear_settings">Clear settings</string>
 </resources>

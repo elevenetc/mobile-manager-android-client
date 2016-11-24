@@ -95,6 +95,11 @@ public class SettingsFragment extends Fragment implements SettingsView {
 		presenter.unbind();
 	}
 
+	@OnClick(R.id.btn_clear) void clearSettings() {
+		presenter.resetSettings();
+		updateUi();
+	}
+
 	@Override public void requestLocationPermission() {
 		Utils.requestLocationPermission(this);
 	}
@@ -105,6 +110,10 @@ public class SettingsFragment extends Fragment implements SettingsView {
 
 	@Override public void locationDisabled() {
 		updateLocation(false);
+	}
+
+	@Override public void requestFingerPrintPermission() {
+		Utils.requestFingerPrintPermission(this);
 	}
 
 	@Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
