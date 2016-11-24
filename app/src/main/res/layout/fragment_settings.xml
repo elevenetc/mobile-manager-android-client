@@ -3,17 +3,47 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-	<EditText android:id="@+id/edit_endpoint"
-	          android:hint="@string/endpoint"
-	          android:layout_width="match_parent"
-	          android:layout_height="wrap_content"/>
-	<Button android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:id="@+id/btn_bind"
-	        android:text="@string/bind"/>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	              android:orientation="vertical"
+	              android:paddingBottom="@dimen/border"
+	              android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
 
-	<Button android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:id="@+id/btn_unbind"
-	        android:text="@string/unbind"/>
+		<TextView
+				android:text="@string/remote_binding"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		<EditText android:id="@+id/edit_endpoint"
+		          android:hint="@string/endpoint"
+		          android:layout_width="match_parent"
+		          android:layout_height="wrap_content"/>
+
+		<Button android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:id="@+id/btn_bind"
+		        android:text="@string/bind"/>
+
+		<Button android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:id="@+id/btn_unbind"
+		        android:text="@string/unbind"/>
+	</LinearLayout>
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	              android:paddingBottom="@dimen/border"
+	              android:orientation="vertical"
+	              android:layout_width="match_parent"
+	              android:layout_height="match_parent">
+		<TextView
+				android:text="@string/location_access"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+		<CheckBox android:text="@string/enabled"
+		          android:id="@+id/check_location_enabled"
+		          android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"/>
+	</LinearLayout>
+
 </LinearLayout>

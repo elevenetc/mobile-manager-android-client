@@ -13,4 +13,10 @@ public interface SettingsView {
     void setBindingSuccess();
 
     void setUnbindingSuccess();
+
+	void requestLocationPermission();
+
+	void locationEnabled();
+
+	void locationDisabled();
 }

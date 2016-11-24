@@ -15,6 +15,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import rx.Observable;
 import su.elevenets.devicemanagerclient.R;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
+import su.elevenets.devicemanagerclient.utils.Utils;
 
 import static android.os.Build.MANUFACTURER;
 import static android.os.Build.MODEL;
@@ -109,18 +110,15 @@ public class AppManagerImpl implements AppManager {
         return MANUFACTURER;
     }
 
-    @Override
-    public String getModel() {
+    @Override public String getModel() {
         return MODEL;
     }
 
-    @Override
-    public String getDeviceId() {
+    @Override public String getDeviceId() {
         return Settings.Secure.getString(app.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    @Override
-    public Observable<String> getGcmToken() {
+    @Override public Observable<String> getGcmToken() {
 
         return Observable.create(subscriber -> {
 
@@ -132,5 +130,9 @@ public class AppManagerImpl implements AppManager {
                 RxUtils.onError(subscriber, e);
             }
         });
+    }
+
+    @Override public boolean isLocationAllowed(){
+        return Utils.isLocationAllowed(app);
     }
 }

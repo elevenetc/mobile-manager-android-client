@@ -38,4 +38,6 @@ public interface AppManager {
 	String getDeviceId();
 
 	Observable<String> getGcmToken();
+
+	boolean isLocationAllowed();
 }

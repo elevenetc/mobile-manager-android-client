@@ -24,8 +24,16 @@ public class KeyValueManagerImpl implements KeyValueManager {
 		sharedPreferences.edit().putBoolean(key, value).apply();
 	}
 
+	@Override public void store(String key, int value) {
+		sharedPreferences.edit().putInt(key, value).apply();
+	}
+
 	@Override @Nullable public String get(String key) {
 		return sharedPreferences.getString(key, null);
+	}
+
+	@Override public int getInt(String key) {
+		return sharedPreferences.getInt(key, 0);
 	}
 
 	@Override @Nullable public boolean getBoolean(String key) {

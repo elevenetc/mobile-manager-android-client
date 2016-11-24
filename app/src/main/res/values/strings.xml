@@ -4,7 +4,10 @@
 	<string name="app_name">DeviceManagerClient</string>
 	<string name="bind">Bind</string>
 	<string name="endpoint">End-point</string>
-	<string name="binding">Binding...</string>
+	<string name="binding">Binding…</string>
 	<string name="error_binding">Binding error</string>
 	<string name="unbind">Unbind</string>
+	<string name="remote_binding">Remote binding</string>
+	<string name="location_access">Location access</string>
+	<string name="enabled">enabled</string>
 </resources>
