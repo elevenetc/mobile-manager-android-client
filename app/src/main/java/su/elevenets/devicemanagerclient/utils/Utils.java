@@ -7,12 +7,21 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import su.elevenets.devicemanagerclient.consts.RequestCodes;
 
 /**
  * Created by eugene.levenetc on 23/11/2016.
  */
 public class Utils {
+
+	public static double getScreenSize(Activity activity, int screenWidth, int screenHeight) {
+		DisplayMetrics dm = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		double x = Math.pow(screenWidth / dm.xdpi, 2);
+		double y = Math.pow(screenHeight / dm.ydpi, 2);
+		return Math.sqrt(x + y);
+	}
 
 	public static boolean locationGranted(int requestCode, int[] grantResults) {
 		boolean result = true;
@@ -67,7 +76,7 @@ public class Utils {
 	public static boolean isFingerPrintSensorAllowed(Context context) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			final boolean granted = ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED;
-			if(granted){
+			if (granted) {
 
 			}
 			return granted;

@@ -79,6 +79,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 			device.wifiSSID = appManager.getWiFiSSID();
 			device.screenWidth = appManager.getScreenWidth();
 			device.screenHeight = appManager.getScreenHeight();
+			device.screenSize = appManager.getScreenSize();
 			return device;
 		});
 	}

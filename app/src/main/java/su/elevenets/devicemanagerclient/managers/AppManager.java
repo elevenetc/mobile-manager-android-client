@@ -17,6 +17,8 @@ public interface AppManager {
 
 	int getScreenHeight();
 
+	double getScreenSize();
+
 	String osVersion();
 
 	String getWiFiSSID();

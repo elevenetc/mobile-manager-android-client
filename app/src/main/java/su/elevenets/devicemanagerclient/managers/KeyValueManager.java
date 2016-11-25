@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
  */
 public interface KeyValueManager {
 
+	void store(String key, double value);
+
 	void store(String key, String value);
 
 	void store(String key, boolean value);
@@ -16,6 +18,8 @@ public interface KeyValueManager {
 	@Nullable String get(String key);
 
 	int getInt(String key);
+
+	double getDouble(String key);
 
 	boolean getBoolean(String key);
 

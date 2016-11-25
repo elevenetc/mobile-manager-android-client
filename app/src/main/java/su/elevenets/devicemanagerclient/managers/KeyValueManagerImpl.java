@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.provider.DocumentFile;
 
 /**
  * Created by eleven on 28/08/2016.
@@ -14,6 +15,10 @@ public class KeyValueManagerImpl implements KeyValueManager {
 
 	public KeyValueManagerImpl(Context appContext) {
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+	}
+
+	@Override public void store(String key, double value) {
+		sharedPreferences.edit().putLong(key, doubleToLong(value)).apply();
 	}
 
 	@Override public void store(String key, String value) {
@@ -36,11 +41,23 @@ public class KeyValueManagerImpl implements KeyValueManager {
 		return sharedPreferences.getInt(key, 0);
 	}
 
+	@Override public double getDouble(String key) {
+		return longToDouble(sharedPreferences.getLong(key, 0));
+	}
+
 	@Override @Nullable public boolean getBoolean(String key) {
 		return sharedPreferences.getBoolean(key, false);
 	}
 
 	@Override public void clear() {
 		sharedPreferences.edit().clear().apply();
+	}
+
+	private static double longToDouble(long value){
+		return Double.longBitsToDouble(value);
+	}
+
+	private static long doubleToLong(double value) {
+		return Double.doubleToRawLongBits(value);
 	}
 }

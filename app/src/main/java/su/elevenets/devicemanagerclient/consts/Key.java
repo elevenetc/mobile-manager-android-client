@@ -9,5 +9,6 @@ public class Key {
 	public static final String END_POINT = "lastEndPoint";
 	public static final String SCREEN_HEIGHT = "screenHeight";
 	public static final String SCREEN_WIDTH = "screenWidth";
+	public static final String SCREEN_SIZE = "screenSize";
 	public static final String BOUND = "bound";
 }

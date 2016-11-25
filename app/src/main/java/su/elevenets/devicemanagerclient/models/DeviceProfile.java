@@ -16,11 +16,11 @@ public class DeviceProfile {
 	public String wifiSSID;
 	public int screenWidth;
 	public int screenHeight;
+	public double screenSize;
 	public boolean hasNfc;
 	public boolean hasBluetooth;
 	public boolean hasBluetoothLowEnergy;
 	public boolean hasFingerprintScanner;
 	public float batteryLevel;
-	//TODO: add screen size
-	//TODO: add switchedOn
+	//TODO: add isOnline
 }

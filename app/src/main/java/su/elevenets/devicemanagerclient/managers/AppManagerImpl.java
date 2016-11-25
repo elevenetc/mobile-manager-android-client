@@ -36,16 +36,15 @@ public class AppManagerImpl implements AppManager {
 		this.keyValueManager = keyValueManager;
 	}
 
-	@Override
-	public void initValues(Activity activity) {
+	@Override public void initValues(Activity activity) {
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		keyValueManager.store(Key.SCREEN_WIDTH, displaymetrics.widthPixels);
 		keyValueManager.store(Key.SCREEN_HEIGHT, displaymetrics.heightPixels);
+		keyValueManager.store(Key.SCREEN_SIZE, Utils.getScreenSize(activity, displaymetrics.widthPixels, displaymetrics.heightPixels));
 	}
 
-	@Override
-	public float batteryLevel() {
+	@Override public float batteryLevel() {
 		final Intent batteryIntent = app.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		final int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		final int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -55,30 +54,29 @@ public class AppManagerImpl implements AppManager {
 		return ((float) level / (float) scale) * 100.0f;
 	}
 
-	@Override
-	public int getScreenWidth() {
+	@Override public int getScreenWidth() {
 		return keyValueManager.getInt(Key.SCREEN_WIDTH);
 	}
 
-	@Override
-	public int getScreenHeight() {
+	@Override public int getScreenHeight() {
 		return keyValueManager.getInt(Key.SCREEN_HEIGHT);
 	}
 
-	@Override
-	public String osVersion() {
+	@Override public double getScreenSize() {
+		return keyValueManager.getDouble(Key.SCREEN_SIZE);
+	}
+
+	@Override public String osVersion() {
 		return Build.VERSION.RELEASE;
 	}
 
-	@Override
-	public String getWiFiSSID() {
+	@Override public String getWiFiSSID() {
 		WifiManager wifiManager = (WifiManager) app.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifiManager.getConnectionInfo();
 		return info.getSSID();
 	}
 
-	@Override
-	public boolean hasNfc() {
+	@Override public boolean hasNfc() {
 		return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
 	}
 
@@ -93,26 +91,22 @@ public class AppManagerImpl implements AppManager {
 		}
 	}
 
-	@Override
-	public boolean hasBluetooth() {
+	@Override public boolean hasBluetooth() {
 		return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH);
 	}
 
-	@Override
-	public boolean hasBluetoothLowEnergy() {
+	@Override public boolean hasBluetoothLowEnergy() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
 			return app.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
 		else
 			return false;
 	}
 
-	@Override
-	public int getSenderId() {
+	@Override public int getSenderId() {
 		return R.string.gcmSenderId;
 	}
 
-	@Override
-	public String getManufacturer() {
+	@Override public String getManufacturer() {
 		return MANUFACTURER;
 	}
 
