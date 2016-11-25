@@ -2,45 +2,52 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="su.elevenets.devicemanagerclient">
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <application
-            android:name=".App"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+	<application
+			android:name=".App"
+			android:allowBackup="true"
+			android:icon="@mipmap/ic_launcher"
+			android:label="@string/app_name"
+			android:supportsRtl="true"
+			android:theme="@style/AppTheme">
+		<activity android:name=".MainActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
 
-        <!-- Google Cloud Message components -->
+		<!-- Google Cloud Message components -->
 
 
-        <service
-                android:name=".services.fcm.MessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
+		<service
+				android:name=".services.fcm.MessagingService">
+			<intent-filter>
+				<action android:name="com.google.firebase.MESSAGING_EVENT"/>
+			</intent-filter>
+		</service>
 
-        <service
-                android:name=".services.fcm.InstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
+		<service
+				android:name=".services.fcm.InstanceIDService">
+			<intent-filter>
+				<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+			</intent-filter>
+		</service>
 
-        <!-- Google Cloud Message components -->
+		<!-- Google Cloud Message components -->
 
-    </application>
+		<receiver android:name=".receivers.NetworkStateReceiver">
+			<intent-filter>
+				<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+			</intent-filter>
+		</receiver>
+
+	</application>
 
 </manifest>

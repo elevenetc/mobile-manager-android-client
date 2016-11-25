@@ -24,5 +24,8 @@ public interface RestManager {
 
 		@POST("location/{deviceId}")
 		Single<Object> updateLocation(@Path("deviceId") String deviceId, @Query("lat") double lat, @Query("lon") double lon);
+
+		@POST("online/{deviceId}")
+		Single<Object> updateOnlineState(@Path("deviceId") String deviceId, @Query("isOnline") boolean isOnline);
 	}
 }

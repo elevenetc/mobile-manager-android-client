@@ -1,5 +1,7 @@
 package su.elevenets.devicemanagerclient.managers;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -28,8 +30,16 @@ public class RestManagerImpl implements RestManager {
 	}
 
 	private Api initApi(String endPoint) {
+
+		final OkHttpClient.Builder clientBuilder = new OkHttpClient().newBuilder();
+		final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+
+		clientBuilder.addInterceptor(interceptor);
+		interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl(endPoint)
+				.client(clientBuilder.build())
 				.addConverterFactory(GsonConverterFactory.create())
 				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.build();

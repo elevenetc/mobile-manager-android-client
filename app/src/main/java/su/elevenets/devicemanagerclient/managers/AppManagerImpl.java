@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
@@ -42,6 +44,12 @@ public class AppManagerImpl implements AppManager {
 		keyValueManager.store(Key.SCREEN_WIDTH, displaymetrics.widthPixels);
 		keyValueManager.store(Key.SCREEN_HEIGHT, displaymetrics.heightPixels);
 		keyValueManager.store(Key.SCREEN_SIZE, Utils.getScreenSize(activity, displaymetrics.widthPixels, displaymetrics.heightPixels));
+	}
+
+	@Override public boolean isConnectedToNetwork(){
+		final ConnectivityManager conMgr = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+		final NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
+		return activeNetwork != null && activeNetwork.isConnected();
 	}
 
 	@Override public float batteryLevel() {

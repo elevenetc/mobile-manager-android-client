@@ -3,6 +3,7 @@ package su.elevenets.devicemanagerclient.managers;
 import android.location.Location;
 import rx.Observable;
 import rx.Single;
+import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -46,6 +47,10 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 
 			}
 		});
+	}
+
+	@Override public Single<Object> updateOnlineState() {
+		return restManager.getApi().updateOnlineState(appManager.getDeviceId(), appManager.isConnectedToNetwork());
 	}
 
 	private void updateLocation() {

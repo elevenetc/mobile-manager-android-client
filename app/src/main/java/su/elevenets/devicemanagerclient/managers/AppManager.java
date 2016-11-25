@@ -11,6 +11,8 @@ public interface AppManager {
 
 	void initValues(Activity activity);
 
+	boolean isConnectedToNetwork();
+
 	float batteryLevel();
 
 	int getScreenWidth();

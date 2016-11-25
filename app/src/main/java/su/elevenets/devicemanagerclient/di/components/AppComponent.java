@@ -6,6 +6,7 @@ import su.elevenets.devicemanagerclient.di.modules.AppModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
 import su.elevenets.devicemanagerclient.fragments.SettingsFragment;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
+import su.elevenets.devicemanagerclient.receivers.NetworkStateReceiver;
 import su.elevenets.devicemanagerclient.services.fcm.InstanceIDService;
 import su.elevenets.devicemanagerclient.services.fcm.MessagingService;
 
@@ -30,4 +31,6 @@ public interface AppComponent {
 	void inject(MessagingService messagingService);
 
 	void inject(MainActivity mainActivity);
+
+	void inject(NetworkStateReceiver networkStateReceiver);
 }
