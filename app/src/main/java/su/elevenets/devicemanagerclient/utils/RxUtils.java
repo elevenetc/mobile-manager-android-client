@@ -2,6 +2,7 @@ package su.elevenets.devicemanagerclient.utils;
 
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by eleven on 28/08/2016.
@@ -18,4 +19,5 @@ public class RxUtils {
 	public static void unsub(Subscription subscription) {
 		if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
 	}
+
 }

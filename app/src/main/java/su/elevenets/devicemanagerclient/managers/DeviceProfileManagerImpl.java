@@ -1,17 +1,16 @@
 package su.elevenets.devicemanagerclient.managers;
 
-import android.location.Location;
 import rx.Observable;
 import rx.Single;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
+import su.elevenets.devicemanagerclient.bus.events.PingEvent;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
 import su.elevenets.devicemanagerclient.managers.loc.LocManager;
 import su.elevenets.devicemanagerclient.models.DeviceProfile;
+import su.elevenets.devicemanagerclient.utils.Actions;
 
 
 /**
@@ -46,15 +45,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 			public Observable<Object> call(DeviceProfile device) {
 				return restManager.getApi().postDevice(device);
 			}
-		}).doOnNext(new Action1<Object>() {
-			@Override public void call(Object o) {
-				updateLocation();
-			}
-		}).doOnCompleted(new Action0() {
-			@Override public void call() {
-
-			}
-		});
+		}).doOnNext(o -> updateLocation());
 	}
 
 	@Override public Single<Object> updateOnlineState() {
@@ -83,30 +74,15 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 	}
 
 	@Override public void subscribeOnDeviceEvents() {
+
 		broadcastBus
 				.subscribeOn(DeviceBootEvent.class)
-				.filter(new Func1<DeviceBootEvent, Boolean>() {
-					@Override public Boolean call(DeviceBootEvent deviceBootEvent) {
-						return appManager.isConnectedToNetwork();
-					}
-				})
-				.flatMap(new Func1<DeviceBootEvent, Observable<?>>() {
-					@Override public Observable<?> call(DeviceBootEvent deviceBootEvent) {
-						return uploadDeviceProfile();
-					}
-				})
+				.filter(deviceBootEvent -> appManager.isConnectedToNetwork())
+				.flatMap(deviceBootEvent -> uploadDeviceProfile())
 				.onExceptionResumeNext(Observable.empty())
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
-				.subscribe(new Action1<Object>() {
-					@Override public void call(Object o) {
-
-					}
-				}, new Action1<Throwable>() {
-					@Override public void call(Throwable throwable) {
-
-					}
-				});
+				.subscribe(Actions.empty(), Actions.error());
 
 		broadcastBus
 				.subscribeOn(NetworkChangedEvent.class)
@@ -115,35 +91,32 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.onExceptionResumeNext(Observable.empty())
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
-				.subscribe();
+				.subscribe(Actions.empty(), Actions.error());
+
+		broadcastBus
+				.subscribeOn(PingEvent.class)
+				.filter(event -> appManager.isConnectedToNetwork())
+				.flatMap(event -> uploadDeviceProfile())
+				.onExceptionResumeNext(Observable.empty())
+				.subscribeOn(schedulersManager.background())
+				.observeOn(schedulersManager.ui())
+				.subscribe(Actions.empty(), Actions.error());
 	}
 
 
 	private Func1<Loc, Single<Object>> sendLocation() {
-
-		return new Func1<Loc, Single<Object>>() {
-			@Override public Single<Object> call(Loc location) {
-				return restManager.getApi().updateLocation(
-						appManager.getDeviceId(),
-						location.getLat(),
-						location.getLon()
-				).subscribeOn(schedulersManager.background());
-			}
-		};
+		return location -> restManager.getApi().updateLocation(
+				appManager.getDeviceId(),
+				location.getLat(),
+				location.getLon()
+		).subscribeOn(schedulersManager.background());
 	}
 
 	private void updateLocation() {
 		locManager
 				.getLocation()
 				.subscribeOn(schedulersManager.ui())
-				.flatMap(sendLocation()).subscribe(new Action1<Object>() {
-			@Override public void call(Object o) {
-
-			}
-		}, new Action1<Throwable>() {
-			@Override public void call(Throwable throwable) {
-				throwable.printStackTrace();
-			}
-		});
+				.flatMap(sendLocation())
+				.subscribe(Actions.empty(), Actions.error());
 	}
 }
