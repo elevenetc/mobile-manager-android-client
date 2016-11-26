@@ -7,6 +7,7 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.USE_FINGERPRINT"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
 	<application
 			android:name=".App"
@@ -45,6 +46,15 @@
 		<receiver android:name=".receivers.NetworkStateReceiver">
 			<intent-filter>
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+			</intent-filter>
+		</receiver>
+
+		<receiver android:name=".receivers.DeviceBootReceiver"
+		          android:enabled="true"
+		          android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+				<category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
 		</receiver>
 
