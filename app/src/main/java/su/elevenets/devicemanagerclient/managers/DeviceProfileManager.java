@@ -13,4 +13,6 @@ public interface DeviceProfileManager {
 	Single<Object> updateOnlineState();
 
 	Observable<DeviceProfile> getDeviceProfile();
+
+	void subscribeOnDeviceEvents();
 }

@@ -8,15 +8,20 @@ import rx.subjects.PublishSubject;
  */
 public class BroadcastBusImpl implements BroadcastBus {
 
-    private PublishSubject<Object> subject = PublishSubject.create();
+	private PublishSubject<Object> subject = PublishSubject.create();
 
-    @Override
-    public Observable getObservable() {
-        return subject.asObservable();
-    }
+	@Override
+	public Observable<Object> getObservable() {
+		return subject.asObservable();
+	}
 
-    @Override
-    public void post(Object object) {
-        subject.onNext(object);
-    }
+	@Override
+	public void post(Object object) {
+		subject.onNext(object);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override public <T> Observable<T> subscribeOn(Class<T> type) {
+		return (Observable<T>) getObservable().filter(o -> o.getClass().isAssignableFrom(type));
+	}
 }

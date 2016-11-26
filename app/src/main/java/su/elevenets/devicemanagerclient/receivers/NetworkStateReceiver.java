@@ -3,7 +3,6 @@ package su.elevenets.devicemanagerclient.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -23,21 +22,19 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 
 	@Override public void onReceive(Context context, Intent intent) {
 		DIHelper.getAppComponent().inject(this);
-		final boolean connectedToNetwork = appManager.isConnectedToNetwork();
 
-		Log.i("connected", String.valueOf(connectedToNetwork));
+		if (appManager.isConnectedToNetwork())
+			deviceProfileManager.updateOnlineState()
+					.subscribeOn(Schedulers.io())
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(new Action1<Object>() {
+						@Override public void call(Object o) {
 
-		deviceProfileManager.updateOnlineState()
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Action1<Object>() {
-					@Override public void call(Object o) {
-
-					}
-				}, new Action1<Throwable>() {
-					@Override public void call(Throwable throwable) {
-						throwable.printStackTrace();
-					}
-				});
+						}
+					}, new Action1<Throwable>() {
+						@Override public void call(Throwable throwable) {
+							throwable.printStackTrace();
+						}
+					});
 	}
 }

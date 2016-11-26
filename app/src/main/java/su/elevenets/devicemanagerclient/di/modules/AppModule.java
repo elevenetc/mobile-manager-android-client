@@ -6,6 +6,8 @@ import dagger.Provides;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.BroadcastBusImpl;
 import su.elevenets.devicemanagerclient.managers.*;
+import su.elevenets.devicemanagerclient.managers.loc.LocManager;
+import su.elevenets.devicemanagerclient.managers.loc.LocManagerImpl;
 
 import javax.inject.Singleton;
 
@@ -49,7 +51,19 @@ public class AppModule {
 
 	@Provides
 	@Singleton
-	public DeviceProfileManager provideDeviceProfileManager(RestManager restManager, LocManager locManager, AppManager appManager) {
-		return new DeviceProfileManagerImpl(restManager, appManager, locManager);
+	public SchedulersManager provideSchedulersManager() {
+		return new SchedulersManagerImpl();
+	}
+
+	@Provides
+	@Singleton
+	public DeviceProfileManager provideDeviceProfileManager(
+			RestManager restManager,
+			LocManager locManager,
+			AppManager appManager,
+			BroadcastBus broadcastBus,
+			SchedulersManager schedulersManager
+	) {
+		return new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
 	}
 }

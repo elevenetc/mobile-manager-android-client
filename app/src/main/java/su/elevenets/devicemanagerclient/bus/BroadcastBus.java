@@ -7,7 +7,9 @@ import rx.Observable;
  */
 public interface BroadcastBus {
 
-    Observable getObservable();
+	Observable<Object> getObservable();
 
-    void post(Object object);
+	void post(Object object);
+
+	<T> Observable<T> subscribeOn(Class<T> type);
 }

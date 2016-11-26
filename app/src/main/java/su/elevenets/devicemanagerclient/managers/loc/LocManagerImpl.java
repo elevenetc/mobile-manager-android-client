@@ -1,4 +1,4 @@
-package su.elevenets.devicemanagerclient.managers;
+package su.elevenets.devicemanagerclient.managers.loc;
 
 import android.content.Context;
 import android.location.Location;
@@ -25,20 +25,15 @@ public class LocManagerImpl implements LocManager, GoogleApiClient.ConnectionCal
 		init(appContext);
 	}
 
-	@Override public Single<Location> getLocation() {
+	@Override public Single<Loc> getLocation() {
 		if (Utils.isLocationAllowed(appContext)) {
 			return Single.create(singleSubscriber -> {
 						final LocationRequest locationRequest = new LocationRequest();
 
-				final Thread thread = Thread.currentThread();
-				if(thread == null){
-
-				}
-
 				LocationServices.FusedLocationApi.requestLocationUpdates(
 								apiClient,
 								locationRequest, location -> {
-									if (!singleSubscriber.isUnsubscribed()) singleSubscriber.onSuccess(location);
+									if (!singleSubscriber.isUnsubscribed()) singleSubscriber.onSuccess(new Loc(location.getLatitude(), location.getLongitude()));
 								}
 						);
 					}
