@@ -75,6 +75,7 @@ public class SettingsFragment extends Fragment implements SettingsView {
 	}
 
 	@Override public void setBindingError(Throwable throwable) {
+
 		Toast.makeText(getContext(), R.string.error_binding, Toast.LENGTH_SHORT).show();
 		updateUi();
 	}

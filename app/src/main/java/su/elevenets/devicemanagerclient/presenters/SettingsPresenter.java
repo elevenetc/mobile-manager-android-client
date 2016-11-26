@@ -2,6 +2,7 @@ package su.elevenets.devicemanagerclient.presenters;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.consts.RequestCodes;
@@ -60,6 +61,11 @@ public class SettingsPresenter {
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnNext(o -> keyValueManager.store(Key.BOUND, true))
+				.doOnError(new Action1<Throwable>() {
+					@Override public void call(Throwable throwable) {
+						throwable.printStackTrace();
+					}
+				})
 				.subscribe(o -> {
 					keyValueManager.store(Key.BOUND, true);
 					view.setBindingSuccess();

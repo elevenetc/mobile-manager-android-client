@@ -64,6 +64,8 @@ public class AppModule {
 			BroadcastBus broadcastBus,
 			SchedulersManager schedulersManager
 	) {
-		return new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
+		final DeviceProfileManagerImpl result = new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
+		result.subscribeOnDeviceEvents();
+		return result;
 	}
 }
