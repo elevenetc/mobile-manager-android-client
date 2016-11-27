@@ -3,6 +3,7 @@ package su.elevenets.devicemanagerclient.managers;
 import android.util.Log;
 import rx.Observable;
 import rx.Single;
+import rx.functions.Action0;
 import rx.functions.Func1;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
@@ -38,7 +39,6 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		this.locManager = locManager;
 		this.broadcastBus = broadcastBus;
 		this.schedulersManager = schedulersManager;
-		Log.d(Tags.APP, "DeviceProfileManager created");
 	}
 
 	@Override public Observable<Object> uploadDeviceProfile() {
@@ -81,28 +81,40 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		broadcastBus
 				.subscribeOn(DeviceBootEvent.class)
 				.filter(deviceBootEvent -> appManager.isConnectedToNetwork())
-				.flatMap(deviceBootEvent -> uploadDeviceProfile())
-				.onExceptionResumeNext(Observable.empty())
+				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
+				.doOnUnsubscribe(new Action0() {
+					@Override public void call() {
+						Log.d(Tags.APP, "unsubscribed from DeviceBootEvent");
+					}
+				})
 				.subscribe(Actions.empty(), Actions.error());
 
 		broadcastBus
 				.subscribeOn(NetworkChangedEvent.class)
 				.filter(event -> appManager.isConnectedToNetwork())
-				.flatMap(event -> uploadDeviceProfile())
-				.onExceptionResumeNext(Observable.empty())
+				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
+				.doOnUnsubscribe(new Action0() {
+					@Override public void call() {
+						Log.d(Tags.APP, "unsubscribed from NetworkChangedEvent");
+					}
+				})
 				.subscribe(Actions.empty(), Actions.error());
 
 		broadcastBus
 				.subscribeOn(PingEvent.class)
 				.filter(event -> appManager.isConnectedToNetwork())
-				.flatMap(event -> uploadDeviceProfile())
-				.onExceptionResumeNext(Observable.empty())
+				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
+				.doOnUnsubscribe(new Action0() {
+					@Override public void call() {
+						Log.d(Tags.APP, "unsubscribed from PingEvent");
+					}
+				})
 				.subscribe(Actions.empty(), Actions.error());
 	}
 

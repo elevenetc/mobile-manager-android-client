@@ -1,15 +1,15 @@
 package su.elevenets.devicemanagerclient;
 
-import android.location.Location;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Action1;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
+import su.elevenets.devicemanagerclient.bus.BroadcastBusImpl;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
+import su.elevenets.devicemanagerclient.bus.events.PingEvent;
 import su.elevenets.devicemanagerclient.managers.*;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
 import su.elevenets.devicemanagerclient.managers.loc.LocManager;
@@ -34,11 +34,11 @@ public class DeviceProfileManagerTests {
 		restManager = mock(RestManager.class);
 		appManager = mock(AppManager.class);
 		locManager = mock(LocManager.class);
-		broadcastBus = mock(BroadcastBus.class);
+		broadcastBus = new BroadcastBusImpl();//mock(BroadcastBus.class);
 		api = mock(RestManager.Api.class);
 		SchedulersManager schedulersManager = new TestScheduler();
 
-		Mockito.when(broadcastBus.subscribeOn(Mockito.any())).thenReturn(Observable.empty());
+		//Mockito.when(broadcastBus.subscribeOn(Mockito.any())).thenReturn(Observable.empty());
 
 		deviceProfileManager = new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
 	}
@@ -55,22 +55,32 @@ public class DeviceProfileManagerTests {
 		verify(uploadHandler, times(1)).call(result);
 	}
 
-	@Test public void handleNetworkStateEvent() {
+	@Test public void handleNetworkStateEventAndPostDevice() {
 
 		configDefaultSuccessValues(new Object());
 
-		when(broadcastBus.subscribeOn(NetworkChangedEvent.class)).thenReturn(just(new NetworkChangedEvent()));
 		deviceProfileManager.subscribeOnDeviceEvents();
+		broadcastBus.post(new NetworkChangedEvent());
 
 		verify(api, times(1)).postDevice(any());
 	}
 
-	@Test public void handleBootEvent() {
+	@Test public void handleBootEventAndPostDevice() {
 
 		configDefaultSuccessValues(new Object());
 
-		when(broadcastBus.subscribeOn(DeviceBootEvent.class)).thenReturn(just(new DeviceBootEvent()));
 		deviceProfileManager.subscribeOnDeviceEvents();
+		broadcastBus.post(new DeviceBootEvent());
+
+		verify(api, times(1)).postDevice(any());
+	}
+
+	@Test public void handlePingAndPostDevice() {
+
+		configDefaultSuccessValues(new Object());
+
+		deviceProfileManager.subscribeOnDeviceEvents();
+		broadcastBus.post(new PingEvent());
 
 		verify(api, times(1)).postDevice(any());
 	}
