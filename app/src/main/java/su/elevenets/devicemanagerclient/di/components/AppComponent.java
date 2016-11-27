@@ -1,6 +1,7 @@
 package su.elevenets.devicemanagerclient.di.components;
 
 import dagger.Component;
+import su.elevenets.devicemanagerclient.App;
 import su.elevenets.devicemanagerclient.MainActivity;
 import su.elevenets.devicemanagerclient.di.modules.AppModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
@@ -36,4 +37,6 @@ public interface AppComponent {
 	void inject(NetworkStateReceiver networkStateReceiver);
 
 	void inject(DeviceBootReceiver deviceBootReceiver);
+
+	void inject(App app);
 }

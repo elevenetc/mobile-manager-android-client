@@ -5,4 +5,5 @@ package su.elevenets.devicemanagerclient.consts;
  */
 public class Tags {
 	public static final String ERROR = "error";
+	public static final String APP = "app";
 }

@@ -1,5 +1,6 @@
 package su.elevenets.devicemanagerclient.managers;
 
+import android.util.Log;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -7,6 +8,7 @@ import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
 import su.elevenets.devicemanagerclient.bus.events.PingEvent;
+import su.elevenets.devicemanagerclient.consts.Tags;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
 import su.elevenets.devicemanagerclient.managers.loc.LocManager;
 import su.elevenets.devicemanagerclient.models.DeviceProfile;
@@ -36,6 +38,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		this.locManager = locManager;
 		this.broadcastBus = broadcastBus;
 		this.schedulersManager = schedulersManager;
+		Log.d(Tags.APP, "DeviceProfileManager created");
 	}
 
 	@Override public Observable<Object> uploadDeviceProfile() {
