@@ -22,5 +22,7 @@ public class App extends Application {
 		Firebase.setAndroidContext(this);
 		DIHelper.init(this);
 		DIHelper.getAppComponent().inject(this);
+
+		//TODO: replace Log.xxx
 	}
 }

@@ -35,7 +35,7 @@ public class RestManagerImpl implements RestManager {
 		final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
 
 		clientBuilder.addInterceptor(interceptor);
-		interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+		interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl(endPoint)

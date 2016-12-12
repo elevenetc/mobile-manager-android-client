@@ -62,6 +62,9 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 	}
 
 	@Override public Observable<DeviceProfile> getDeviceProfile() {
+
+		//TODO: fix wifi network extra quotes
+
 		return appManager.getGcmToken().map(token -> {
 			DeviceProfile device = new DeviceProfile();
 			device.pushToken = token;
@@ -83,6 +86,8 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 	}
 
 	@Override public void subscribeOnDeviceEvents() {
+
+		//TODO: add check if bound
 
 		broadcastBus
 				.subscribeOn(DeviceBootEvent.class)
