@@ -46,7 +46,7 @@ public class AppManagerImpl implements AppManager {
 		keyValueManager.store(Key.SCREEN_SIZE, Utils.getScreenSize(activity, displaymetrics.widthPixels, displaymetrics.heightPixels));
 	}
 
-	@Override public boolean isConnectedToNetwork(){
+	@Override public boolean isConnectedToNetwork() {
 		final ConnectivityManager conMgr = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		final NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
 		return activeNetwork != null && activeNetwork.isConnected();

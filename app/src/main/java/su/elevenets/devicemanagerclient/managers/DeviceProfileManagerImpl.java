@@ -4,10 +4,12 @@ import android.util.Log;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
+import su.elevenets.devicemanagerclient.bus.events.NewFirebaseToken;
 import su.elevenets.devicemanagerclient.bus.events.PingEvent;
 import su.elevenets.devicemanagerclient.consts.Tags;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
@@ -47,6 +49,10 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 			@Override
 			public Observable<Object> call(DeviceProfile device) {
 				return restManager.getApi().postDevice(device);
+			}
+		}).doOnError(new Action1<Throwable>() {
+			@Override public void call(Throwable throwable) {
+				throwable.printStackTrace();
 			}
 		}).doOnNext(o -> updateLocation());
 	}
@@ -113,6 +119,19 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.doOnUnsubscribe(new Action0() {
 					@Override public void call() {
 						Log.d(Tags.APP, "unsubscribed from PingEvent");
+					}
+				})
+				.subscribe(Actions.empty(), Actions.error());
+
+		broadcastBus
+				.subscribeOn(NewFirebaseToken.class)
+				.filter(event -> appManager.isConnectedToNetwork())
+				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
+				.subscribeOn(schedulersManager.background())
+				.observeOn(schedulersManager.ui())
+				.doOnUnsubscribe(new Action0() {
+					@Override public void call() {
+						Log.d(Tags.APP, "unsubscribed from NetworkChangedEvent");
 					}
 				})
 				.subscribe(Actions.empty(), Actions.error());
