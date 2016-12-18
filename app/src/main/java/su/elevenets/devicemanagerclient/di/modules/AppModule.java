@@ -50,6 +50,7 @@ public class AppModule {
 			AppManager appManager,
 			BroadcastBus broadcastBus,
 			SchedulersManager schedulersManager,
+			KeyValueManager keyValueManager,
 	        Logger logger
 	) {
 		final DeviceProfileManagerImpl result = new DeviceProfileManagerImpl(
@@ -58,6 +59,7 @@ public class AppModule {
 				locManager,
 				broadcastBus,
 				schedulersManager,
+				keyValueManager,
 				logger
 		);
 		result.subscribeOnDeviceEvents();

@@ -2,7 +2,6 @@ package su.elevenets.devicemanagerclient;
 
 import org.junit.Before;
 import org.junit.Test;
-import rx.Observable;
 import rx.Single;
 import rx.functions.Action1;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
@@ -10,6 +9,7 @@ import su.elevenets.devicemanagerclient.bus.BroadcastBusImpl;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
 import su.elevenets.devicemanagerclient.bus.events.PingEvent;
+import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.managers.*;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
 import su.elevenets.devicemanagerclient.managers.loc.LocManager;
@@ -29,18 +29,32 @@ public class DeviceProfileManagerTests {
 	BroadcastBus broadcastBus;
 	RestManager.Api api;
 	DeviceProfileManager deviceProfileManager;
+	KeyValueManager keyValueManager;
+	Logger logger;
 
 	@Before public void before() {
 		restManager = mock(RestManager.class);
 		appManager = mock(AppManager.class);
 		locManager = mock(LocManager.class);
-		broadcastBus = new BroadcastBusImpl();//mock(BroadcastBus.class);
+		keyValueManager = mock(KeyValueManager.class);
+		logger = mock(Logger.class);
+		broadcastBus = new BroadcastBusImpl();
 		api = mock(RestManager.Api.class);
 		SchedulersManager schedulersManager = new TestScheduler();
 
+		when(keyValueManager.getBoolean(Key.BOUND)).thenReturn(true);
+
 		//Mockito.when(broadcastBus.subscribeOn(Mockito.any())).thenReturn(Observable.empty());
 
-		deviceProfileManager = new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
+		deviceProfileManager = new DeviceProfileManagerImpl(
+				restManager,
+				appManager,
+				locManager,
+				broadcastBus,
+				schedulersManager,
+				keyValueManager,
+				logger
+		);
 	}
 
 	@Test public void uploadDevice() {

@@ -10,6 +10,7 @@ import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
 import su.elevenets.devicemanagerclient.bus.events.NewFirebaseToken;
 import su.elevenets.devicemanagerclient.bus.events.PingEvent;
+import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
 import su.elevenets.devicemanagerclient.managers.loc.LocManager;
 import su.elevenets.devicemanagerclient.models.DeviceProfile;
@@ -28,6 +29,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 	private LocManager locManager;
 	private BroadcastBus broadcastBus;
 	private SchedulersManager schedulersManager;
+	private KeyValueManager keyValueManager;
 	private Logger logger;
 
 	public DeviceProfileManagerImpl(
@@ -36,6 +38,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 			LocManager locManager,
 			BroadcastBus broadcastBus,
 			SchedulersManager schedulersManager,
+			KeyValueManager keyValueManager,
 	        Logger logger
 	) {
 		this.restManager = restManager;
@@ -43,6 +46,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		this.locManager = locManager;
 		this.broadcastBus = broadcastBus;
 		this.schedulersManager = schedulersManager;
+		this.keyValueManager = keyValueManager;
 		this.logger = logger;
 	}
 
@@ -65,8 +69,6 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 	}
 
 	@Override public Observable<DeviceProfile> getDeviceProfile() {
-
-		//TODO: fix wifi network extra quotes
 
 		return appManager.getGcmToken().map(token -> {
 			DeviceProfile device = new DeviceProfile();
@@ -94,7 +96,8 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 
 		broadcastBus
 				.subscribeOn(DeviceBootEvent.class)
-				.filter(deviceBootEvent -> appManager.isConnectedToNetwork())
+				.filter(event -> appManager.isConnectedToNetwork())
+				.filter(event -> keyValueManager.getBoolean(Key.BOUND))
 				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
@@ -108,6 +111,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		broadcastBus
 				.subscribeOn(NetworkChangedEvent.class)
 				.filter(event -> appManager.isConnectedToNetwork())
+				.filter(event -> keyValueManager.getBoolean(Key.BOUND))
 				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
@@ -121,6 +125,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		broadcastBus
 				.subscribeOn(PingEvent.class)
 				.filter(event -> appManager.isConnectedToNetwork())
+				.filter(event -> keyValueManager.getBoolean(Key.BOUND))
 				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
@@ -134,6 +139,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 		broadcastBus
 				.subscribeOn(NewFirebaseToken.class)
 				.filter(event -> appManager.isConnectedToNetwork())
+				.filter(event -> keyValueManager.getBoolean(Key.BOUND))
 				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))
 				.subscribeOn(schedulersManager.background())
 				.observeOn(schedulersManager.ui())
