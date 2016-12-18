@@ -14,7 +14,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "su.elevenets.devicemanagerclient"
@@ -41,6 +41,10 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/LICENSE-FIREBASE_jvm.txt'
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
