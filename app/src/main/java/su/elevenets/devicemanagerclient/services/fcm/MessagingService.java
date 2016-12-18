@@ -1,12 +1,11 @@
 package su.elevenets.devicemanagerclient.services.fcm;
 
-import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.events.PingEvent;
-import su.elevenets.devicemanagerclient.consts.Tags;
 import su.elevenets.devicemanagerclient.di.DIHelper;
+import su.elevenets.devicemanagerclient.managers.Logger;
 
 import javax.inject.Inject;
 import java.util.Map;
@@ -16,7 +15,10 @@ import java.util.Map;
  */
 public class MessagingService extends FirebaseMessagingService {
 
+	private static final String TAG = MessagingService.class.getSimpleName();
+
 	@Inject BroadcastBus broadcastBus;
+	@Inject Logger logger;
 
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -29,11 +31,11 @@ public class MessagingService extends FirebaseMessagingService {
 		final String messageId = remoteMessage.getMessageId();
 		final String messageType = remoteMessage.getMessageType();
 
-		Log.d(Tags.APP, "onMessageReceived");
+		logger.debug(TAG, "onMessageReceived");
 
 		if (data.containsKey("command")) {
 			if (data.containsValue("ping")) {
-				Log.d(Tags.APP, "ping event sent");
+				logger.debug(TAG, "ping event sent");
 				broadcastBus.post(new PingEvent());
 			}
 		}

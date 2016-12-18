@@ -3,6 +3,7 @@ package su.elevenets.devicemanagerclient.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,12 @@ import su.elevenets.devicemanagerclient.consts.RequestCodes;
  * Created by eugene.levenetc on 23/11/2016.
  */
 public class Utils {
+
+	public static String getAppName(Context context){
+		ApplicationInfo applicationInfo = context.getApplicationInfo();
+		int stringId = applicationInfo.labelRes;
+		return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
+	}
 
 	public static double getScreenSize(Activity activity, int screenWidth, int screenHeight) {
 		DisplayMetrics dm = new DisplayMetrics();

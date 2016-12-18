@@ -23,24 +23,29 @@ import su.elevenets.devicemanagerclient.utils.Actions;
  */
 public class DeviceProfileManagerImpl implements DeviceProfileManager {
 
+	private static final String TAG = DeviceProfileManager.class.getSimpleName();
+
 	private RestManager restManager;
 	private AppManager appManager;
 	private LocManager locManager;
 	private BroadcastBus broadcastBus;
 	private SchedulersManager schedulersManager;
+	private Logger logger;
 
 	public DeviceProfileManagerImpl(
 			RestManager restManager,
 			AppManager appManager,
 			LocManager locManager,
 			BroadcastBus broadcastBus,
-			SchedulersManager schedulersManager
+			SchedulersManager schedulersManager,
+	        Logger logger
 	) {
 		this.restManager = restManager;
 		this.appManager = appManager;
 		this.locManager = locManager;
 		this.broadcastBus = broadcastBus;
 		this.schedulersManager = schedulersManager;
+		this.logger = logger;
 	}
 
 	@Override public Observable<Object> uploadDeviceProfile() {
@@ -97,7 +102,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.observeOn(schedulersManager.ui())
 				.doOnUnsubscribe(new Action0() {
 					@Override public void call() {
-						Log.d(Tags.APP, "unsubscribed from DeviceBootEvent");
+						logger.error(TAG, "unsubscribed from DeviceBootEvent");
 					}
 				})
 				.subscribe(Actions.empty(), Actions.error());
@@ -110,7 +115,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.observeOn(schedulersManager.ui())
 				.doOnUnsubscribe(new Action0() {
 					@Override public void call() {
-						Log.d(Tags.APP, "unsubscribed from NetworkChangedEvent");
+						logger.error(TAG, "unsubscribed from NetworkChangedEvent");
 					}
 				})
 				.subscribe(Actions.empty(), Actions.error());
@@ -123,7 +128,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.observeOn(schedulersManager.ui())
 				.doOnUnsubscribe(new Action0() {
 					@Override public void call() {
-						Log.d(Tags.APP, "unsubscribed from PingEvent");
+						logger.error(TAG, "unsubscribed from PingEvent");
 					}
 				})
 				.subscribe(Actions.empty(), Actions.error());
@@ -136,7 +141,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.observeOn(schedulersManager.ui())
 				.doOnUnsubscribe(new Action0() {
 					@Override public void call() {
-						Log.d(Tags.APP, "unsubscribed from NetworkChangedEvent");
+						logger.error(TAG, "unsubscribed from NetworkChangedEvent");
 					}
 				})
 				.subscribe(Actions.empty(), Actions.error());

@@ -8,6 +8,7 @@ import su.elevenets.devicemanagerclient.bus.BroadcastBusImpl;
 import su.elevenets.devicemanagerclient.managers.*;
 import su.elevenets.devicemanagerclient.managers.loc.LocManager;
 import su.elevenets.devicemanagerclient.managers.loc.LocManagerImpl;
+import su.elevenets.devicemanagerclient.utils.Utils;
 
 import javax.inject.Singleton;
 
@@ -67,5 +68,11 @@ public class AppModule {
 		final DeviceProfileManagerImpl result = new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
 		result.subscribeOnDeviceEvents();
 		return result;
+	}
+
+	@Provides
+	@Singleton
+	public Logger provideLogger() {
+		return new LoggerImpl(Utils.getAppName(app));
 	}
 }
