@@ -147,7 +147,7 @@ public class AppManagerImpl implements AppManager {
 		return Utils.isLocationAllowed(app);
 	}
 
-	@Override public boolean isM() {
+	@Override public boolean isAndroidM() {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
 	}
 

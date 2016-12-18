@@ -45,7 +45,7 @@ public interface AppManager {
 
 	boolean isLocationAllowed();
 
-	boolean isM();
+	boolean isAndroidM();
 
 	boolean isFingerPrintAccessAllowed();
 }

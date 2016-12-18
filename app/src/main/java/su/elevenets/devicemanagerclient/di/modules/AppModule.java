@@ -19,9 +19,19 @@ import javax.inject.Singleton;
 public class AppModule {
 
 	private Context app;
+	private LocManager locManager;
+	private KeyValueManager keyValueManager;
 
 	public AppModule(Context app) {
 		this.app = app;
+	}
+
+	public void setLocManager(LocManager locManager) {
+		this.locManager = locManager;
+	}
+
+	public void setKeyValueManager(KeyValueManager keyValueManager) {
+		this.keyValueManager = keyValueManager;
 	}
 
 	@Provides @Singleton public AppManager provideAppManager(KeyValueManager keyValueManager) {
@@ -29,10 +39,12 @@ public class AppModule {
 	}
 
 	@Provides @Singleton public KeyValueManager provideKeyValueManager() {
-		return new KeyValueManagerImpl(app);
+		if(keyValueManager != null) return keyValueManager;
+		else return new KeyValueManagerImpl(app);
 	}
 
 	@Provides @Singleton public LocManager provideLocManager() {
+		if(locManager != null) return locManager;
 		return new LocManagerImpl(app);
 	}
 

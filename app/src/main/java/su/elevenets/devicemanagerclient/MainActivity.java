@@ -13,8 +13,7 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Inject
-    AppManager appManager;
+    @Inject AppManager appManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

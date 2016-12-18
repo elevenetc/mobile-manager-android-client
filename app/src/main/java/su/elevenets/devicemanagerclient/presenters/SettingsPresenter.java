@@ -2,14 +2,10 @@ package su.elevenets.devicemanagerclient.presenters;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.consts.RequestCodes;
-import su.elevenets.devicemanagerclient.managers.AppManager;
-import su.elevenets.devicemanagerclient.managers.DeviceProfileManager;
-import su.elevenets.devicemanagerclient.managers.KeyValueManager;
-import su.elevenets.devicemanagerclient.managers.RestManager;
+import su.elevenets.devicemanagerclient.managers.*;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 import su.elevenets.devicemanagerclient.utils.Utils;
 import su.elevenets.devicemanagerclient.views.SettingsView;
@@ -21,10 +17,13 @@ import javax.inject.Inject;
  */
 public class SettingsPresenter {
 
+	private static final String TAG = SettingsPresenter.class.getSimpleName();
+
 	@Inject AppManager appManager;
 	@Inject RestManager restManager;
 	@Inject KeyValueManager keyValueManager;
 	@Inject DeviceProfileManager deviceProfileManager;
+	@Inject Logger logger;
 
 	private SettingsView view;
 	private Subscription sub;
@@ -36,7 +35,7 @@ public class SettingsPresenter {
 	public void onViewCreated(SettingsView view) {
 		this.view = view;
 
-		if (appManager.isM()) {
+		if (appManager.isAndroidM()) {
 			if (!appManager.isFingerPrintAccessAllowed()) {
 				view.requestFingerPrintPermission();
 			}
@@ -61,15 +60,14 @@ public class SettingsPresenter {
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnNext(o -> keyValueManager.store(Key.BOUND, true))
-				.doOnError(new Action1<Throwable>() {
-					@Override public void call(Throwable throwable) {
-						throwable.printStackTrace();
-					}
-				})
+				.doOnError(throwable -> logger.error(TAG, throwable))
 				.subscribe(o -> {
 					keyValueManager.store(Key.BOUND, true);
 					view.setBindingSuccess();
-				}, throwable -> view.setBindingError(throwable));
+				}, throwable -> {
+					logger.error(TAG, throwable);
+					view.setBindingError(throwable);
+				});
 	}
 
 	public void unbind() {
@@ -82,7 +80,7 @@ public class SettingsPresenter {
 					keyValueManager.store(Key.BOUND, false);
 					view.setUnbindingSuccess();
 				}, throwable -> {
-					throwable.printStackTrace();
+					logger.error(TAG, throwable);
 					view.setBindingError(throwable);
 				});
 	}
@@ -126,7 +124,7 @@ public class SettingsPresenter {
 			if (Utils.locationGranted(requestCode, grantResults)) handleEnabledLocation();
 			else handleDisabledLocation();
 		} else if (requestCode == RequestCodes.PERMISSION_FINGER_PRINT) {
-
+			//do nothing
 		}
 
 	}

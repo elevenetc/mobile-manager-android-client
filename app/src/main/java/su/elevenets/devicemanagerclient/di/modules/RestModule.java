@@ -13,7 +13,15 @@ import javax.inject.Singleton;
  */
 @Module
 public class RestModule {
+
+	private RestManager restManager;
+
+	public RestModule(RestManager restManager) {
+		this.restManager = restManager;
+	}
+
 	@Provides @Singleton public RestManager provideRestManager(KeyValueManager keyValueManager) {
-		return new RestManagerImpl(keyValueManager);
+		if (restManager != null) return restManager;
+		else return new RestManagerImpl(keyValueManager);
 	}
 }
