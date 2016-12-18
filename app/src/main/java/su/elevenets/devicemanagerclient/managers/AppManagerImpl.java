@@ -81,7 +81,10 @@ public class AppManagerImpl implements AppManager {
 	@Override public String getWiFiSSID() {
 		WifiManager wifiManager = (WifiManager) app.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifiManager.getConnectionInfo();
-		return info.getSSID();
+		String result = info.getSSID();
+		if (result.startsWith("\"") && result.endsWith("\""))
+			result = result.substring(1, result.length() - 1);
+		return result;
 	}
 
 	@Override public boolean hasNfc() {

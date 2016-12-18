@@ -18,61 +18,53 @@ import javax.inject.Singleton;
 @Module
 public class AppModule {
 
-	public static final String GCM_TOKEN = "pushToken";
-
 	private Context app;
 
 	public AppModule(Context app) {
 		this.app = app;
 	}
 
-	@Provides
-	@Singleton
-	public AppManager provideAppManager(KeyValueManager keyValueManager) {
+	@Provides @Singleton public AppManager provideAppManager(KeyValueManager keyValueManager) {
 		return new AppManagerImpl(app, keyValueManager);
 	}
 
-	@Provides
-	@Singleton
-	public KeyValueManager provideKeyValueManager() {
+	@Provides @Singleton public KeyValueManager provideKeyValueManager() {
 		return new KeyValueManagerImpl(app);
 	}
 
-	@Provides
-	@Singleton
-	public LocManager provideLocManager() {
+	@Provides @Singleton public LocManager provideLocManager() {
 		return new LocManagerImpl(app);
 	}
 
-	@Provides
-	@Singleton
-	public BroadcastBus provideProadcastBus() {
+	@Provides @Singleton public BroadcastBus provideProadcastBus() {
 		return new BroadcastBusImpl();
 	}
 
-	@Provides
-	@Singleton
-	public SchedulersManager provideSchedulersManager() {
+	@Provides @Singleton public SchedulersManager provideSchedulersManager() {
 		return new SchedulersManagerImpl();
 	}
 
-	@Provides
-	@Singleton
-	public DeviceProfileManager provideDeviceProfileManager(
+	@Provides @Singleton public DeviceProfileManager provideDeviceProfileManager(
 			RestManager restManager,
 			LocManager locManager,
 			AppManager appManager,
 			BroadcastBus broadcastBus,
-			SchedulersManager schedulersManager
+			SchedulersManager schedulersManager,
+	        Logger logger
 	) {
-		final DeviceProfileManagerImpl result = new DeviceProfileManagerImpl(restManager, appManager, locManager, broadcastBus, schedulersManager);
+		final DeviceProfileManagerImpl result = new DeviceProfileManagerImpl(
+				restManager,
+				appManager,
+				locManager,
+				broadcastBus,
+				schedulersManager,
+				logger
+		);
 		result.subscribeOnDeviceEvents();
 		return result;
 	}
 
-	@Provides
-	@Singleton
-	public Logger provideLogger() {
+	@Provides @Singleton public Logger provideLogger() {
 		return new LoggerImpl(Utils.getAppName(app));
 	}
 }
