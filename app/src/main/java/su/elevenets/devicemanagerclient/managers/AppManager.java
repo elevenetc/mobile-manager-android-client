@@ -1,6 +1,7 @@
 package su.elevenets.devicemanagerclient.managers;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import rx.Observable;
 import su.elevenets.devicemanagerclient.models.DeviceProfile;
 
@@ -8,6 +9,8 @@ import su.elevenets.devicemanagerclient.models.DeviceProfile;
  * Created by eleven on 28/08/2016.
  */
 public interface AppManager {
+
+	@Nullable String getSystemProp(String name);
 
 	void initValues(Activity activity);
 

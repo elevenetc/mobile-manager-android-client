@@ -14,6 +14,7 @@ import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import rx.Observable;
@@ -21,6 +22,10 @@ import su.elevenets.devicemanagerclient.R;
 import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 import su.elevenets.devicemanagerclient.utils.Utils;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static android.os.Build.MANUFACTURER;
 import static android.os.Build.MODEL;
@@ -32,10 +37,29 @@ public class AppManagerImpl implements AppManager {
 
 	private Context app;
 	private KeyValueManager keyValueManager;
+	private Logger logger;
 
-	public AppManagerImpl(Context app, KeyValueManager keyValueManager) {
+	public AppManagerImpl(
+			Context app,
+			KeyValueManager keyValueManager,
+			Logger logger
+	) {
 		this.app = app;
 		this.keyValueManager = keyValueManager;
+		this.logger = logger;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Nullable @Override public String getSystemProp(String name) {
+
+		try {
+			Class clazz = Class.forName("android.os.SystemProperties");
+			Method method = clazz.getDeclaredMethod("get", String.class);
+			return (String) method.invoke(null, name);
+		} catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	@Override public void initValues(Activity activity) {

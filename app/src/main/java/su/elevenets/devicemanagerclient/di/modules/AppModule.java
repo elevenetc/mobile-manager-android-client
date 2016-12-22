@@ -34,8 +34,8 @@ public class AppModule {
 		this.keyValueManager = keyValueManager;
 	}
 
-	@Provides @Singleton public AppManager provideAppManager(KeyValueManager keyValueManager) {
-		return new AppManagerImpl(app, keyValueManager);
+	@Provides @Singleton public AppManager provideAppManager(KeyValueManager keyValueManager, Logger logger) {
+		return new AppManagerImpl(app, keyValueManager, logger);
 	}
 
 	@Provides @Singleton public KeyValueManager provideKeyValueManager() {
