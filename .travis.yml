@@ -22,7 +22,7 @@ android:
     - tools
     - extra-android-support
     - extra-google-google_play_services
-    - addon-google_apis-google-23
+    - addon-google_apis-google-$ANDROID_API_LEVEL
     - extra-google-m2repository
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
