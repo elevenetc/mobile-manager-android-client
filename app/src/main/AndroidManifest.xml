@@ -59,6 +59,12 @@
 			</intent-filter>
 		</receiver>
 
+		<receiver android:name=".receivers.BindCommandReceiver">
+			<intent-filter>
+				<action android:name="su.levenetc.devicemanager.intent.Bind"/>
+			</intent-filter>
+		</receiver>
+
 	</application>
 
 </manifest>

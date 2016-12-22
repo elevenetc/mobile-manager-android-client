@@ -7,6 +7,7 @@ import su.elevenets.devicemanagerclient.di.modules.AppModule;
 import su.elevenets.devicemanagerclient.di.modules.RestModule;
 import su.elevenets.devicemanagerclient.fragments.SettingsFragment;
 import su.elevenets.devicemanagerclient.presenters.SettingsPresenter;
+import su.elevenets.devicemanagerclient.receivers.BindCommandReceiver;
 import su.elevenets.devicemanagerclient.receivers.DeviceBootReceiver;
 import su.elevenets.devicemanagerclient.receivers.NetworkStateReceiver;
 import su.elevenets.devicemanagerclient.services.fcm.InstanceIDService;
@@ -38,4 +39,6 @@ public interface AppComponent {
 	void inject(DeviceBootReceiver deviceBootReceiver);
 
 	void inject(App app);
+
+	void inject(BindCommandReceiver bindCommandReceiver);
 }

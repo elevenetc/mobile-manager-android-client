@@ -1,9 +1,11 @@
 package su.elevenets.devicemanagerclient.presenters;
 
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import su.elevenets.devicemanagerclient.BuildConfig;
+import su.elevenets.devicemanagerclient.bus.BroadcastBus;
+import su.elevenets.devicemanagerclient.bus.events.RemoteBindCommand;
 import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.consts.RequestCodes;
 import su.elevenets.devicemanagerclient.managers.*;
@@ -25,9 +27,10 @@ public class SettingsPresenter {
 	@Inject KeyValueManager keyValueManager;
 	@Inject DeviceProfileManager deviceProfileManager;
 	@Inject Logger logger;
+	@Inject BroadcastBus bus;
 
 	private SettingsView view;
-	private Subscription sub;
+	private CompositeSubscription sub = new CompositeSubscription();
 
 	public void resetSettings() {
 		keyValueManager.clear();
@@ -36,11 +39,15 @@ public class SettingsPresenter {
 	public void onViewCreated(SettingsView view) {
 		this.view = view;
 
-		if (appManager.isAndroidM()) {
-			if (!appManager.isFingerPrintAccessAllowed()) {
+		if (appManager.isAndroidM())
+			if (!appManager.isFingerPrintAccessAllowed())
 				view.requestFingerPrintPermission();
-			}
-		}
+
+		sub.add(
+				bus.subscribeOn(RemoteBindCommand.class).subscribe(
+						remoteBindCommand -> bind()
+				)
+		);
 	}
 
 	public void onViewDestroyed() {
@@ -50,6 +57,8 @@ public class SettingsPresenter {
 
 	public void bind() {
 
+		if (keyValueManager.getBoolean(Key.BOUND)) return;
+
 		//TODO: add end point validation
 
 		view.setProgress();
@@ -57,7 +66,7 @@ public class SettingsPresenter {
 
 		keyValueManager.store(Key.END_POINT, endpoint);
 
-		sub = deviceProfileManager.uploadDeviceProfile()
+		sub.add(deviceProfileManager.uploadDeviceProfile()
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnNext(o -> keyValueManager.store(Key.BOUND, true))
@@ -68,7 +77,7 @@ public class SettingsPresenter {
 				}, throwable -> {
 					logger.error(TAG, throwable);
 					view.setBindingError(throwable);
-				});
+				}));
 	}
 
 	public void unbind() {
