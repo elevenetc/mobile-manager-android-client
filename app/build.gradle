@@ -1,3 +1,7 @@
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def bindUrl = properties.getProperty('endpoint')
+
 buildscript {
     repositories {
         mavenCentral()
@@ -29,6 +33,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        buildTypes.each {
+            it.buildConfigField 'String', 'END_POINT', (bindUrl ? ('"' + bindUrl + '"'): '""')
         }
     }
     compileOptions {

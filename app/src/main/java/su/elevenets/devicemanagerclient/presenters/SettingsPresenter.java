@@ -3,6 +3,7 @@ package su.elevenets.devicemanagerclient.presenters;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import su.elevenets.devicemanagerclient.BuildConfig;
 import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.consts.RequestCodes;
 import su.elevenets.devicemanagerclient.managers.*;
@@ -86,7 +87,9 @@ public class SettingsPresenter {
 	}
 
 	public String getEndpoint() {
-		return keyValueManager.get(Key.END_POINT);
+		final String staticValue = BuildConfig.END_POINT;
+		final String storedValue = keyValueManager.get(Key.END_POINT);
+		return storedValue == null ? staticValue : storedValue;
 	}
 
 	public boolean isBound() {
