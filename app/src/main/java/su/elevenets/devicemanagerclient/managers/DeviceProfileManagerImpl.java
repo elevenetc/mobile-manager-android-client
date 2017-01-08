@@ -39,7 +39,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 			BroadcastBus broadcastBus,
 			SchedulersManager schedulersManager,
 			KeyValueManager keyValueManager,
-	        Logger logger
+			Logger logger
 	) {
 		this.restManager = restManager;
 		this.appManager = appManager;
@@ -86,6 +86,8 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 			device.screenWidth = appManager.getScreenWidth();
 			device.screenHeight = appManager.getScreenHeight();
 			device.screenSize = appManager.getScreenSize();
+			device.cpuArch = appManager.getCPUArch();
+			device.cpuCoreNum = appManager.getCPUCoreNum();
 			return device;
 		});
 	}

@@ -23,7 +23,6 @@ import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.utils.RxUtils;
 import su.elevenets.devicemanagerclient.utils.Utils;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -177,5 +176,13 @@ public class AppManagerImpl implements AppManager {
 
 	@Override public boolean isFingerPrintAccessAllowed() {
 		return Utils.isFingerPrintSensorAllowed(app);
+	}
+
+	@Override public String getCPUArch() {
+		return System.getProperty("os.arch");
+	}
+
+	@Override public int getCPUCoreNum() {
+		return Runtime.getRuntime().availableProcessors();
 	}
 }

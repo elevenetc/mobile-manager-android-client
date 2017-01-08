@@ -51,4 +51,8 @@ public interface AppManager {
 	boolean isAndroidM();
 
 	boolean isFingerPrintAccessAllowed();
+
+	String getCPUArch();
+
+	int getCPUCoreNum();
 }

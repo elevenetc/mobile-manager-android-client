@@ -22,5 +22,6 @@ public class DeviceProfile {
 	public boolean hasBluetoothLowEnergy;
 	public boolean hasFingerprintScanner;
 	public float batteryLevel;
-	//TODO: add isOnline
+	public String cpuArch;
+	public int cpuCoreNum;
 }
