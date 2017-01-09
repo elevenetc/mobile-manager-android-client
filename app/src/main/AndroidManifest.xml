@@ -61,7 +61,7 @@
 
 		<receiver android:name=".receivers.BindCommandReceiver">
 			<intent-filter>
-				<action android:name="su.levenetc.devicemanager.intent.Bind"/>
+				<action android:name="su.elevenets.devicemanagerclient.intent.Bind"/>
 			</intent-filter>
 		</receiver>
 

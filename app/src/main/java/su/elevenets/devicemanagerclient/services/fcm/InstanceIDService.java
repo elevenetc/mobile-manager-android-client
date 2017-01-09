@@ -2,7 +2,7 @@ package su.elevenets.devicemanagerclient.services.fcm;
 
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
-import su.elevenets.devicemanagerclient.bus.events.NewFirebaseToken;
+import su.elevenets.devicemanagerclient.bus.events.FirebaseTokenRefreshedEvent;
 import su.elevenets.devicemanagerclient.di.DIHelper;
 
 import javax.inject.Inject;
@@ -17,6 +17,6 @@ public class InstanceIDService extends FirebaseInstanceIdService {
 	@Override public void onTokenRefresh() {
 		super.onTokenRefresh();
 		DIHelper.getAppComponent().inject(this);
-		bus.post(new NewFirebaseToken());
+		bus.post(new FirebaseTokenRefreshedEvent());
 	}
 }

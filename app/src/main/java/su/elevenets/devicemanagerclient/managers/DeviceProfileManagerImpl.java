@@ -8,7 +8,7 @@ import rx.functions.Func1;
 import su.elevenets.devicemanagerclient.bus.BroadcastBus;
 import su.elevenets.devicemanagerclient.bus.events.DeviceBootEvent;
 import su.elevenets.devicemanagerclient.bus.events.NetworkChangedEvent;
-import su.elevenets.devicemanagerclient.bus.events.NewFirebaseToken;
+import su.elevenets.devicemanagerclient.bus.events.FirebaseTokenRefreshedEvent;
 import su.elevenets.devicemanagerclient.bus.events.PingEvent;
 import su.elevenets.devicemanagerclient.consts.Key;
 import su.elevenets.devicemanagerclient.managers.loc.Loc;
@@ -139,7 +139,7 @@ public class DeviceProfileManagerImpl implements DeviceProfileManager {
 				.subscribe(Actions.empty(), Actions.error());
 
 		broadcastBus
-				.subscribeOn(NewFirebaseToken.class)
+				.subscribeOn(FirebaseTokenRefreshedEvent.class)
 				.filter(event -> appManager.isConnectedToNetwork())
 				.filter(event -> keyValueManager.getBoolean(Key.BOUND))
 				.flatMap(event -> uploadDeviceProfile().onErrorResumeNext(throwable -> Observable.empty()))

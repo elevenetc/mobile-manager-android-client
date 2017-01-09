@@ -19,8 +19,9 @@ import android.util.DisplayMetrics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import rx.Observable;
 import su.elevenets.devicemanagerclient.R;
+import su.elevenets.devicemanagerclient.bus.BroadcastBus;
+import su.elevenets.devicemanagerclient.bus.events.FirebaseTokenRefreshedEvent;
 import su.elevenets.devicemanagerclient.consts.Key;
-import su.elevenets.devicemanagerclient.utils.RxUtils;
 import su.elevenets.devicemanagerclient.utils.Utils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -37,15 +38,18 @@ public class AppManagerImpl implements AppManager {
 	private Context app;
 	private KeyValueManager keyValueManager;
 	private Logger logger;
+	private BroadcastBus bus;
 
 	public AppManagerImpl(
 			Context app,
 			KeyValueManager keyValueManager,
-			Logger logger
+			Logger logger,
+			BroadcastBus bus
 	) {
 		this.app = app;
 		this.keyValueManager = keyValueManager;
 		this.logger = logger;
+		this.bus = bus;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -153,17 +157,12 @@ public class AppManagerImpl implements AppManager {
 	}
 
 	@Override public Observable<String> getGcmToken() {
+		final String token = getFirebaseToken();
 
-		return Observable.create(subscriber -> {
-
-			try {
-				final FirebaseInstanceId instance = FirebaseInstanceId.getInstance();
-				final String token = instance.getToken();
-				RxUtils.onNext(subscriber, token);
-			} catch (Exception e) {
-				RxUtils.onError(subscriber, e);
-			}
-		});
+		if (token == null)
+			return bus.subscribeOn(FirebaseTokenRefreshedEvent.class).map(event -> getFirebaseToken());
+		else
+			return Observable.just(token);
 	}
 
 	@Override public boolean isLocationAllowed() {
@@ -184,5 +183,11 @@ public class AppManagerImpl implements AppManager {
 
 	@Override public int getCPUCoreNum() {
 		return Runtime.getRuntime().availableProcessors();
+	}
+
+	@Nullable
+	private String getFirebaseToken() {
+		final FirebaseInstanceId instance = FirebaseInstanceId.getInstance();
+		return instance.getToken();
 	}
 }
