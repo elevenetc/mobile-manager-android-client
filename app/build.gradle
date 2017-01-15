@@ -21,13 +21,13 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "su.elevenets.devicemanagerclient"
+        applicationId "su.elevenets.mobilemanager"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "su.elevenets.devicemanagerclient.TestRunner"
+        testInstrumentationRunner "su.elevenets.mobilemanager.TestRunner"
     }
     buildTypes {
         release {

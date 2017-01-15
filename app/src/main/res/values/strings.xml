@@ -1,7 +1,7 @@
 <resources>
 	<string name="gcmSenderId">743596259723</string>
 
-	<string name="app_name">DeviceManagerClient</string>
+	<string name="app_name">Mobile Manager</string>
 	<string name="bind">Bind</string>
 	<string name="endpoint">End-point</string>
 	<string name="binding">Binding…</string>

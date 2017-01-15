@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="su.elevenets.devicemanagerclient">
+          package="su.elevenets.mobilemanager">
 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -11,13 +11,13 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
 
 	<application
-			android:name=".App"
+			android:name="su.elevenets.mobilemanager.App"
 			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher"
 			android:label="@string/app_name"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
-		<activity android:name=".MainActivity">
+		<activity android:name="su.elevenets.mobilemanager.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
@@ -29,14 +29,14 @@
 
 
 		<service
-				android:name=".services.fcm.MessagingService">
+				android:name="su.elevenets.mobilemanager.services.fcm.MessagingService">
 			<intent-filter>
 				<action android:name="com.google.firebase.MESSAGING_EVENT"/>
 			</intent-filter>
 		</service>
 
 		<service
-				android:name=".services.fcm.InstanceIDService">
+				android:name="su.elevenets.mobilemanager.services.fcm.InstanceIDService">
 			<intent-filter>
 				<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
 			</intent-filter>
@@ -44,13 +44,13 @@
 
 		<!-- Google Cloud Message components -->
 
-		<receiver android:name=".receivers.NetworkStateReceiver">
+		<receiver android:name="su.elevenets.mobilemanager.receivers.NetworkStateReceiver">
 			<intent-filter>
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
 			</intent-filter>
 		</receiver>
 
-		<receiver android:name=".receivers.DeviceBootReceiver"
+		<receiver android:name="su.elevenets.mobilemanager.receivers.DeviceBootReceiver"
 		          android:enabled="true"
 		          android:exported="true">
 			<intent-filter>
@@ -59,9 +59,9 @@
 			</intent-filter>
 		</receiver>
 
-		<receiver android:name=".receivers.BindCommandReceiver">
+		<receiver android:name="su.elevenets.mobilemanager.receivers.BindCommandReceiver">
 			<intent-filter>
-				<action android:name="su.elevenets.devicemanagerclient.intent.Bind"/>
+				<action android:name="su.elevenets.mobilemanager.intent.Bind"/>
 			</intent-filter>
 		</receiver>
 
