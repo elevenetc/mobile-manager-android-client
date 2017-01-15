@@ -1,6 +1,6 @@
 # Mobile Manager client
 Client for [Mobile Manager](https://github.com/elevenetc/mobile-manager)
-# Build
+## Build
 1. Add endpoint of Mobile Manager to `local.properties`:
 ```
 endpoint=https://yourdomain.org:6666
@@ -10,7 +10,7 @@ endpoint=https://yourdomain.org:6666
 ```
 ./gradlew assembleDebug
 ```
-# Install and run
+## Install and run
 Connect device and execute command(for devices with Android <6.0 remove `-g` param):
 ```bash
 adb install -g ./app/build/outputs/apk/app-debug.apk;
@@ -19,5 +19,5 @@ adb shell am broadcast -a su.elevenets.mobilemanager.intent.Bind --es command "b
 
 ```
 It installs apk, starts activity and sends broadcast message which binds client with your server.
-# Licence
+## Licence
 [MIT](https://opensource.org/licenses/MIT)
