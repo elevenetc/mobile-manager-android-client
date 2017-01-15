@@ -16,3 +16,5 @@ Connect device and execute command(for devices with Android <6.0 remove `-g` par
 adb install -g ./app/build/outputs/apk/app-debug.apk; adb shell am start -n su.elevenets.mobilemanager/.MainActivity; adb shell am broadcast -a su.elevenets.mobilemanager.intent.Bind --es command "bind"
 ```
 It installs apk, starts activity and sends broadcast message which binds client with your server.
+# Licence
+[MIT](https://opensource.org/licenses/MIT)
