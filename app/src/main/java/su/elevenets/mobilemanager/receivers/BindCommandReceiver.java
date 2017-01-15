@@ -12,7 +12,7 @@ import javax.inject.Inject;
 /**
  * Created by eugene.levenetc on 22/12/2016.
  *
- * adb shell am broadcast -a su.levenetc.devicemanager.intent.Bind --es command "bind"
+ * adb shell am broadcast -a su.elevenets.mobilemanager.intent.Bind --es command "bind"
  */
 public class BindCommandReceiver extends BroadcastReceiver {
 
