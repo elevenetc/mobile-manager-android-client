@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:574682410664:android:f1955695fa6d9714",
         "android_client_info": {
-          "package_name": "su.elevenets.devicemanagerclient"
+          "package_name": "su.elevenets.mobilemanager"
         }
       },
       "oauth_client": [
